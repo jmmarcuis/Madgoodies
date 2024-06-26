@@ -1,5 +1,5 @@
 ﻿
-namespace BlogDataLibrary.Database
+namespace DataLibrary.Database
 {
     public interface ISqlDataAccess
     {

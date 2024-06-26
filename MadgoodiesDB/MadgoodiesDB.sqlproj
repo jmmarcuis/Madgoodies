@@ -67,5 +67,6 @@
     <Build Include="dbo\Stored Procedures\spUser_Authenticate.sql" />
     <Build Include="dbo\Stored Procedures\spDeleteGoods.sql" />
     <Build Include="dbo\Stored Procedures\spEditGoods.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAllGoods.sql" />
   </ItemGroup>
 </Project>

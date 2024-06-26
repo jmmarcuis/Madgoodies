@@ -1,6 +1,19 @@
 ﻿CREATE PROCEDURE [dbo].[spEditGoods]
-	@param1 int = 0,
-	@param2 int
+    @ProductID INT,
+    @ProductName VARCHAR(100),
+    @Price DECIMAL(10,2),
+    @Stock INT,
+    @Description TEXT,
+    @Image VARBINARY(MAX) = NULL
 AS
-	SELECT @param1, @param2
-RETURN 0
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE [dbo].[Goods]
+    SET [ProductName] = @ProductName,
+        Price = @Price,
+        Stock = @Stock,
+        [Description] = @Description,
+        Image = @Image
+    WHERE ProductID = @ProductID;
+END

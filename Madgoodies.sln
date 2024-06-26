@@ -9,6 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLibrary", "DataLibrary\
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MadgoodiesDB", "MadgoodiesDB\MadgoodiesDB.sqlproj", "{8B16FCA1-07DF-4DB8-87D9-0D481F669ECA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{72572AEC-80C2-45BD-B186-38A9D1C86A22}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E8D40799-4FAE-4EB5-A024-2951DE5BFBEF} = {E8D40799-4FAE-4EB5-A024-2951DE5BFBEF}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +34,10 @@ Global
 		{8B16FCA1-07DF-4DB8-87D9-0D481F669ECA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B16FCA1-07DF-4DB8-87D9-0D481F669ECA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8B16FCA1-07DF-4DB8-87D9-0D481F669ECA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{72572AEC-80C2-45BD-B186-38A9D1C86A22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72572AEC-80C2-45BD-B186-38A9D1C86A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72572AEC-80C2-45BD-B186-38A9D1C86A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72572AEC-80C2-45BD-B186-38A9D1C86A22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
