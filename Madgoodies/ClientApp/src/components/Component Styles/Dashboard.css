@@ -1,0 +1,100 @@
+/* SidePanel styles */
+.SidePanel {
+    width: 200px;
+    background-color: #000000;
+    color: #fff;
+    position: fixed;
+    height: 100vh;
+    padding: 30px;
+    top: 0;
+    left: 0;
+  }
+  
+  .SidePanel h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .SidePanel ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .SidePanel ul li {
+    padding: 10px 0;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .SidePanel ul li:hover {
+    background-color: #495057;
+  }
+  
+  .MainContent {
+    padding: 30px;
+    margin-left: 250px; /* Adjusted margin-left for spacing */
+  }
+  
+  .MainContentInventoryTable {
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  thead {
+    background-color: #343a40;
+    color: white;
+  }
+  
+  th, td {
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    text-align: left;
+  }
+  
+  th {
+    font-weight: bold;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .action-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .edit-button {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .edit-button:hover {
+    background-color: #218838;
+  }
+  
+  .delete-button {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .delete-button:hover {
+    background-color: #c82333;
+  }
+  
+  .login-logo {
+    width: 150px;
+    margin-bottom: 20px;
+  }
+  
