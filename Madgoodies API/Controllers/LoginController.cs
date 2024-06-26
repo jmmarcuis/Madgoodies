@@ -60,7 +60,15 @@ namespace BlogAPI.Controllers
         }
 
 
-   
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("register")]
+        public ActionResult Resgister([FromBody] UserModel user)
+        {
+            _db.Register(user.UserName, user.FirstName, user.LastName, user.Password);
+            return Ok("User Registered");
+        }
+
 
     }
 }

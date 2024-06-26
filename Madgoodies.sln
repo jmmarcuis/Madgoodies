@@ -4,10 +4,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Madgoodies", "Madgoodies\Madgoodies.csproj", "{D358702B-0AB3-48E6-A561-BDD59C8DD20B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AFD7292E-6870-4BED-BACD-B3593A193164} = {AFD7292E-6870-4BED-BACD-B3593A193164}
+		{E8D40799-4FAE-4EB5-A024-2951DE5BFBEF} = {E8D40799-4FAE-4EB5-A024-2951DE5BFBEF}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLibrary", "DataLibrary\DataLibrary.csproj", "{E8D40799-4FAE-4EB5-A024-2951DE5BFBEF}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MadgoodiesDB", "MadgoodiesDB\MadgoodiesDB.sqlproj", "{8B16FCA1-07DF-4DB8-87D9-0D481F669ECA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E8D40799-4FAE-4EB5-A024-2951DE5BFBEF} = {E8D40799-4FAE-4EB5-A024-2951DE5BFBEF}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Madgoodies API", "Madgoodies API\Madgoodies API.csproj", "{AFD7292E-6870-4BED-BACD-B3593A193164}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8B16FCA1-07DF-4DB8-87D9-0D481F669ECA} = {8B16FCA1-07DF-4DB8-87D9-0D481F669ECA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +41,10 @@ Global
 		{8B16FCA1-07DF-4DB8-87D9-0D481F669ECA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B16FCA1-07DF-4DB8-87D9-0D481F669ECA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8B16FCA1-07DF-4DB8-87D9-0D481F669ECA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{AFD7292E-6870-4BED-BACD-B3593A193164}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFD7292E-6870-4BED-BACD-B3593A193164}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFD7292E-6870-4BED-BACD-B3593A193164}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFD7292E-6870-4BED-BACD-B3593A193164}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

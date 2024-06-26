@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using Dapper;
 
-namespace BlogDataLibrary.Database
+namespace DataLibrary.Database
 {
     public class SqlDataAccess : ISqlDataAccess
     {
