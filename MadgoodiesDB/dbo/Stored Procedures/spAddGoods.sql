@@ -1,6 +1,26 @@
-﻿CREATE PROCEDURE [dbo].[spAddGoods]
-	@param1 int = 0,
-	@param2 int
+﻿ 
+CREATE PROCEDURE [dbo].[spAddGoods]
+    @ProductName VARCHAR(100),
+    @Price DECIMAL(10,2),
+    @Stock INT,
+    @Description TEXT
 AS
-	SELECT @param1, @param2
-RETURN 0
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [dbo].[Goods] (
+        [ProductName],
+        Price,
+        Stock,
+        [Description]
+     
+    )
+    VALUES (
+        @ProductName,
+        @Price,
+        @Stock,
+        @Description
+    
+    );
+END
+GO

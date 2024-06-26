@@ -5,5 +5,5 @@
   Price DECIMAL(10,2) NOT NULL,
   Stock INT NOT NULL,
   [Description] TEXT NOT NULL,
-  Image VARBINARY(MAX)  
+ 
 );

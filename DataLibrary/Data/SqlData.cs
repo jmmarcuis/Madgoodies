@@ -1,19 +1,14 @@
 ﻿using DataLibrary.Database;
 using DataLibrary.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Dapper;
-using Microsoft.Extensions.Configuration;
-
 
 namespace DataLibrary.Data
 {
     public class SqlData : ISqlData
     {
-        public ISqlDataAccess _db;
+        private readonly ISqlDataAccess _db;
         public const string connectionStringName = "SqlDb";
 
         public SqlData(ISqlDataAccess db)
@@ -44,6 +39,35 @@ namespace DataLibrary.Data
             return _db.LoadData<int, dynamic>(sql, new { UserName = username, FirstName = firstName, LastName = lastName }, connectionStringName, true).FirstOrDefault() > 0;
         }
 
+        public void AddGood(string productName, decimal price, int stock, string description )
+        {
+            _db.SaveData("dbo.spAddGoods",
+              new
+              {
+                  productName,
+                  price,
+                  stock,
+                  description,
+                 
+              },
+              connectionStringName,
+              true);
+        }
 
+        public void DeleteGood(int productID)
+        {
+            _db.SaveData("dbo.spDeleteGoods",
+              new
+              {
+                  productID
+              },
+              connectionStringName,
+              true);
+        }
+
+        public IEnumerable<CreateGood> GetAllGoods()
+        {
+            return _db.LoadData<CreateGood, dynamic>("dbo.spGetAllGoods", new { }, connectionStringName, true);
+        }
     }
 }

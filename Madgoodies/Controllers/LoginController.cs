@@ -1,10 +1,10 @@
 ﻿using DataLibrary.Models;
 using DataLibrary.Data;
-using DataLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -48,19 +48,22 @@ namespace BlogAPI.Controllers
         [Route("login")]
         public ActionResult Login([FromBody] UserLogin login)
         {
-            UserModel user = _db.Authenticate(login.UserName, login.Password);
-
-            if (user != null)
+            try
             {
-                var token = GenerateToken(user);
-                return Ok(token);
+                UserModel user = _db.Authenticate(login.UserName, login.Password);
+
+                if (user != null)
+                {
+                    var token = GenerateToken(user);
+                    return Ok(token);
+                }
+
+                return NotFound("Invalid username or password");
             }
-
-            return NotFound("User Not Found");
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
-
-
-   
-
     }
 }
