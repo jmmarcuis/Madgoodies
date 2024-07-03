@@ -1,0 +1,76 @@
+.DeleteModal {
+  font-family: "Poppins", sans-serif;
+  background-color: #fefefe;
+
+  padding: 30px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.DeleteModalFlexContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.DeleteModalFlex {
+  display: flex;
+  gap: 10px;
+}
+
+.ConfirmButton {
+  padding: 5px;
+  width: 100px;
+  background-color: #4C300A;
+  border: 2px solid #4C300A;
+  color: #ccc;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+}
+
+
+.ConfirmButton:hover {
+  border: 2px solid #1A1A1A;
+  background-color: #1A1A1A;
+  color: #ccc;
+  transform: translateY(-2px);
+
+}
+
+.ConfirmButton:disabled{
+  pointer-events: none;
+  background-color: #515151;
+  pointer-events: none;
+}
+.CancelButton {
+  padding: 4px;
+  width: 100px;
+  border: 2px solid #ae1010;
+  background-color: #ae1010;
+  color: #ccc;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+}
+
+.CancelButton:hover {
+  border: 2px solid #1A1A1A;
+  background-color: #1A1A1A;
+  color: #ccc;
+  transform: translateY(-2px);
+}
+
+.CancelButton:disabled{
+  pointer-events: none;
+  background-color: #515151;
+  pointer-events: none;
+}

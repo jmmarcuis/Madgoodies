@@ -1,16 +1,25 @@
+using CloudinaryDotNet;
 using DataLibrary.Data;
 using DataLibrary.Database;
-using DataLibrary.Models;
-using DataLibrary.Data;
-using DataLibrary.Database;
+using dotenv.net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Cloudinary credentials
+DotEnv.Load(options: new DotEnvOptions(probeForEnv: true));
+Cloudinary cloudinary = new Cloudinary(Environment.GetEnvironmentVariable("CLOUDINARY_URL"));
+cloudinary.Api.Secure = true;
+
+builder.Services.AddSingleton(cloudinary);
+
+// Add services to the container
 builder.Services.AddControllers();
+builder.Services.AddTransient<ISqlData, SqlData>();
+builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 // Configure CORS
 builder.Services.AddCors(options =>
@@ -23,12 +32,6 @@ builder.Services.AddCors(options =>
                    .AllowAnyHeader();
         });
 });
-
-
-builder.Services.AddControllers();
-builder.Services.AddTransient<ISqlData, SqlData>();
-builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
-builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 // Configure JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -50,17 +53,14 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
-
-// Use CORS
 app.UseCors("AllowAllOrigins");
-
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

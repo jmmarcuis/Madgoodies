@@ -1,0 +1,6 @@
+﻿CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    OrderDate DATETIME DEFAULT GETDATE() NOT NULL,
+    TotalAmount DECIMAL(10, 2) NOT NULL,
+    Status VARCHAR(50) DEFAULT 'Pending' NOT NULL
+);

@@ -1,7 +1,11 @@
 ﻿using DataLibrary.Data;
 using DataLibrary.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BlogAPI.Controllers
@@ -11,19 +15,38 @@ namespace BlogAPI.Controllers
     public class GoodController : ControllerBase
     {
         private readonly ISqlData _db;
+        private readonly Cloudinary _cloudinary;
 
-        public GoodController(ISqlData db)
+        public GoodController(ISqlData db, Cloudinary cloudinary)
         {
             _db = db;
+            _cloudinary = cloudinary;
         }
 
         [HttpPost]
         [Route("add")]
-        public IActionResult AddGood([FromBody] CreateGood good)
+        public async Task<IActionResult> AddGood([FromForm] CreateGood good, [FromForm] IFormFile productImage)
         {
             try
             {
-                _db.AddGood(good.ProductName, good.Price, good.Stock, good.Description);
+                string imageUrl = null;
+
+                if (productImage != null)
+                {
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(productImage.FileName, productImage.OpenReadStream()),
+                        Transformation = new Transformation().Crop("fill").Gravity("face")
+                    };
+
+                    var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                    imageUrl = uploadResult.SecureUrl.ToString();
+                }
+
+                Console.WriteLine($"Adding Good: ImageUrl={imageUrl}, ProductName={good.ProductName}, Price={good.Price}, Stock={good.Stock}, Description={good.Description}");
+
+                // Ensure the correct field is used for the image URL
+                _db.AddGood(imageUrl, good.ProductName, good.Price, good.Stock, good.Description);
                 return Ok("Good added successfully");
             }
             catch (Exception ex)
@@ -31,5 +54,96 @@ namespace BlogAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+
+
+
+        [HttpGet]
+        [Route("all")]
+        public IActionResult GetAllGoods()
+        {
+            try
+            {
+                IEnumerable<ListGoods> goods = _db.GetAllGoods();
+                foreach (var good in goods)
+                {
+                    Console.WriteLine($"Retrieved Good: ProductID={good.ProductID}, ProductImageUrl={good.ProductImageUrl}, ProductName={good.ProductName}, Price={good.Price}, Stock={good.Stock}, Description={good.Description}");
+                }
+                return Ok(goods);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult DeleteGood(int id)
+        {
+            try
+            {
+                _db.DeleteGood(id);
+                return Ok("Good deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateGood(int id, [FromForm] CreateGood good, [FromForm] IFormFile productImage, [FromForm] string productImageUrl)
+        {
+            try
+            {
+                if (good == null)
+                {
+                    return BadRequest("Good data is missing.");
+                }
+
+                if (string.IsNullOrWhiteSpace(good.ProductName))
+                {
+                    return BadRequest("Product name is required.");
+                }
+
+                if (good.Price <= 0)
+                {
+                    return BadRequest("Price must be greater than zero.");
+                }
+
+                if (good.Stock < 0)
+                {
+                    return BadRequest("Stock cannot be negative.");
+                }
+
+                string imageUrl = productImageUrl;
+
+                if (productImage != null)
+                {
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(productImage.FileName, productImage.OpenReadStream()),
+                        Transformation = new Transformation().Crop("fill").Gravity("face")
+                    };
+
+                    var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                    imageUrl = uploadResult.SecureUrl.ToString();
+                }
+
+                Console.WriteLine($"Updating Good: ID={id}, ImageUrl={imageUrl}, ProductName={good.ProductName}, Price={good.Price}, Stock={good.Stock}, Description={good.Description}");
+
+                _db.UpdateGood(id, imageUrl, good.ProductName, good.Price, good.Stock, good.Description);
+                return Ok(new { message = "Good updated successfully", updatedGood = good });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = $"Internal server error: {ex.Message}" });
+            }
+        }
     }
 }
+
+    
+

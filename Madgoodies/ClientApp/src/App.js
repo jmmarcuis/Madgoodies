@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import { Layout } from './components/Layout';
- 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 export default class App extends Component {
   static displayName = App.name;
 
   render() {
     return (
+      
       <Layout>
+         <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
         <Routes>
           {AppRoutes.map((route, index) => {
             const { element, ...rest } = route;
@@ -16,6 +21,8 @@ export default class App extends Component {
           })}
         </Routes>
       </Layout>
-    );
+  
+
+);
   }
 }
