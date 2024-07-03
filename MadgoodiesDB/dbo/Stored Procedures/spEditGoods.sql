@@ -1,6 +1,21 @@
-﻿CREATE PROCEDURE [dbo].[spEditGoods]
-	@param1 int = 0,
-	@param2 int
+﻿CREATE PROCEDURE dbo.spUpdateGoodDetails
+    @ProductID INT,
+    @ProductName VARCHAR(100),
+    @Price DECIMAL(10,2),
+    @Stock INT,
+    @Description TEXT
 AS
-	SELECT @param1, @param2
-RETURN 0
+BEGIN
+    UPDATE dbo.Goods
+    SET
+        ProductName = @ProductName,
+        Price = @Price,
+        Stock = @Stock,
+        Description = @Description
+    WHERE
+        ProductID = @ProductID;
+    
+    SELECT *
+    FROM dbo.Goods
+    WHERE ProductID = @ProductID;
+END

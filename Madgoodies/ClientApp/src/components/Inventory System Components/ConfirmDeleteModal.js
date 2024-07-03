@@ -3,8 +3,7 @@ import Modal from "react-modal";
 import "../Component Styles/DeleteModal.css"
 import"../Component Styles/Modal.css"
 
-
-const ConfirmDeleteModal = ({ isOpen, onRequestClose, onConfirm  ,isLoading, }) => {
+const ConfirmDeleteModal = ({ isOpen, onRequestClose, onConfirm, isLoading }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -24,8 +23,8 @@ const ConfirmDeleteModal = ({ isOpen, onRequestClose, onConfirm  ,isLoading, }) 
           Are you sure you want to delete <span>GoodName?</span>
         </p>
         <div className="DeleteModalFlex">
-        <button  className="ConfirmButton" onClick={onConfirm} disabled={isLoading}>Yes, Delete</button>
-        <button   className="CancelButton" onClick={onRequestClose} disabled={isLoading}>Cancel</button>
+          <button className="ConfirmButton" onClick={onConfirm} disabled={isLoading}>Yes, Delete</button>
+          <button className="CancelButton" onClick={onRequestClose} disabled={isLoading}>Cancel</button>
         </div>
       </div>
     </Modal>
@@ -33,3 +32,5 @@ const ConfirmDeleteModal = ({ isOpen, onRequestClose, onConfirm  ,isLoading, }) 
 };
 
 export default ConfirmDeleteModal;
+
+ 

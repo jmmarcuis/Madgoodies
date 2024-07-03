@@ -1,17 +1,15 @@
 import React, { useCallback } from "react";
 import Modal from "react-modal";
-import { useDropzone } from 'react-dropzone';
+import { useDropzone } from "react-dropzone";
 import "../Component Styles/ModifyGoodModal.css";
 import "../Component Styles/Modal.css";
 
-const GoodsModal = ({
+const EditGoodModal = ({
   isOpen,
   onRequestClose,
-  handleSubmit,
   handleUpdate,
   handleChange,
   handleImageChange,
-  editMode,
   isSubmitting,
   productName,
   price,
@@ -20,33 +18,40 @@ const GoodsModal = ({
   fileName,
   isLoading,
 }) => {
-  const onDrop = useCallback((acceptedFiles) => {
-    handleImageChange({
-      target: {
-        files: acceptedFiles
-      }
-    });
-  }, [handleImageChange]);
-
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      handleImageChange({
+        target: {
+          files: acceptedFiles,
+        },
+      });
+    },
+    [handleImageChange]
+  );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    handleUpdate(e);
+  };
 
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      contentLabel="Add/Edit Good"
+      contentLabel="Edit Good"
       ariaHideApp={false}
       className="modal"
       overlayClassName="modal-overlay"
     >
       <div className="modal-content">
         <div className="ModifyGoodsModalHeaderFlex">
-          <h2>Modify Goods</h2>
+          <h2>Edit Good</h2>
           <span className="ModalCloseButton" onClick={onRequestClose}>
             &times;
           </span>
         </div>
-        <form onSubmit={editMode ? handleUpdate : handleSubmit}>
+        <form onSubmit={onSubmit}>
           <label>
             Product Name:
             <input
@@ -89,16 +94,20 @@ const GoodsModal = ({
             ></textarea>
           </label>
           <div {...getRootProps()} className="dropzone">
-            <input {...getInputProps()} name="productImage" required />
-            {
-              isDragActive ?
-                <p>Drop the image here ...</p> :
-                <p>Drag 'n' drop an image here, or click to select a file</p>
-            }
+            <input {...getInputProps()} name="productImage" />
+            {isDragActive ? (
+              <p>Drop the image here ...</p>
+            ) : (
+              <p>Drag 'n' drop an image here, or click to select a file</p>
+            )}
             {fileName && <p>Selected file: {fileName}</p>}
           </div>
-          <button type="submit" className="submit-button"     disabled={isSubmitting || isLoading}>
-            {editMode ? "Update Good" : "Add Good"}
+          <button
+            type="submit"
+            className="submit-button"
+            disabled={isSubmitting || isLoading}
+          >
+            Update Good
           </button>
         </form>
       </div>
@@ -106,4 +115,4 @@ const GoodsModal = ({
   );
 };
 
-export default GoodsModal;
+export default EditGoodModal;

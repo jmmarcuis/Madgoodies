@@ -1,12 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+* {
+  font-family: Poppins;
+}
 
 .SidePanel {
-  width: 200px;
+  width: 220px;
   background-color: #E7DDCD;
   color: #000000;
   position: fixed;
   height: 100vh;
-  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
   top: 0;
   left: 0;
 }
@@ -19,25 +24,47 @@
 .SidePanel ul {
   list-style-type: none;
   padding: 0;
+  flex-grow: 1;
+}
+
+.menu-item i {
+  font-size: 14px;
+  margin-right: 10px;
+  padding-left: 10px;
+
+}
+.menu-item{
+  margin-bottom: 10px;
+
+}
+
+.menu-item.active,
+.menu-item:hover {
+  background-color: #1b1b1b;
+  border: 1px solid#1b1b1b;
+  border-radius: 16px;
+  color: #f7f7f7;
 }
 
 .SidePanel ul li {
   padding: 10px 0;
-  text-align: center;
+  text-align: left;
   cursor: pointer;
 }
 
-.SidePanel ul li:hover {
-  background-color: #e3cfb2;
-}
+ 
 
 .MainContent {
   padding: 30px;
   margin-left: 250px;
 }
 
-
 .login-logo {
-  width: 150px;
+  width: 170px;
   margin-bottom: 20px;
+}
+
+.logout {
+  margin-top: auto;
+  text-align: center;
 }

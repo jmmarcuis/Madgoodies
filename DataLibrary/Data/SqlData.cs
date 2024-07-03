@@ -67,13 +67,12 @@ namespace DataLibrary.Data
             return _db.LoadData<ListGoods, dynamic>("dbo.spGetAllGoods", new { }, connectionStringName, true);
         }
 
-        public void UpdateGood(int productID, string productImageUrl, string productName, decimal price, int stock, string description)
+        public void UpdateGoodDetails(int productID, string productName, decimal price, int stock, string description)
         {
-            _db.SaveData("dbo.spUpdateGood",
+            _db.SaveData("dbo.spUpdateGoodDetails",
               new
               {
                   ProductID = productID,
-                  ProductImageUrl = productImageUrl,
                   ProductName = productName,
                   Price = price,
                   Stock = stock,
@@ -83,6 +82,17 @@ namespace DataLibrary.Data
               true);
         }
 
+        public void UpdateGoodImage(int productID, string productImageUrl)
+        {
+            _db.SaveData("dbo.spUpdateGoodImage",
+              new
+              {
+                  ProductID = productID,
+                  ProductImageUrl = productImageUrl
+              },
+              connectionStringName,
+              true);
+        }
 
 
     }

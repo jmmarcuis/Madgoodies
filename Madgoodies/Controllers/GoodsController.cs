@@ -94,7 +94,7 @@ namespace BlogAPI.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> UpdateGood(int id, [FromForm] CreateGood good, [FromForm] IFormFile productImage, [FromForm] string productImageUrl)
+        public IActionResult UpdateGood(int id, [FromBody] UpdateGood good)
         {
             try
             {
@@ -118,24 +118,41 @@ namespace BlogAPI.Controllers
                     return BadRequest("Stock cannot be negative.");
                 }
 
-                string imageUrl = productImageUrl;
+                Console.WriteLine($"Updating Good: ID={id}, ProductName={good.ProductName}, Price={good.Price}, Stock={good.Stock}, Description={good.Description}");
 
-                if (productImage != null)
+                _db.UpdateGoodDetails(id, good.ProductName, good.Price, good.Stock, good.Description);
+                return Ok(new { message = "Good updated successfully", updatedGood = good });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = $"Internal server error: {ex.Message}" });
+            }
+        }
+
+        [HttpPut]
+        [Route("{id}/image")]
+        public async Task<IActionResult> UpdateGoodImage(int id, IFormFile productImage)
+        {
+            try
+            {
+                if (productImage == null)
                 {
-                    var uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription(productImage.FileName, productImage.OpenReadStream()),
-                        Transformation = new Transformation().Crop("fill").Gravity("face")
-                    };
-
-                    var uploadResult = await _cloudinary.UploadAsync(uploadParams);
-                    imageUrl = uploadResult.SecureUrl.ToString();
+                    return BadRequest("No image file provided.");
                 }
 
-                Console.WriteLine($"Updating Good: ID={id}, ImageUrl={imageUrl}, ProductName={good.ProductName}, Price={good.Price}, Stock={good.Stock}, Description={good.Description}");
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(productImage.FileName, productImage.OpenReadStream()),
+                    Transformation = new Transformation().Crop("fill").Gravity("face")
+                };
 
-                _db.UpdateGood(id, imageUrl, good.ProductName, good.Price, good.Stock, good.Description);
-                return Ok(new { message = "Good updated successfully", updatedGood = good });
+                var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                string imageUrl = uploadResult.SecureUrl.ToString();
+
+                Console.WriteLine($"Updating Good Image: ID={id}, ImageUrl={imageUrl}");
+
+                _db.UpdateGoodImage(id, imageUrl);
+                return Ok(new { message = "Good image updated successfully", imageUrl = imageUrl });
             }
             catch (Exception ex)
             {
@@ -144,6 +161,3 @@ namespace BlogAPI.Controllers
         }
     }
 }
-
-    
-

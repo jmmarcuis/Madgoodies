@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
 
-class Home extends Component {
-    static displayName = Home.name;
+class PosLogin extends Component {
+    static displayName = PosLogin.name;
 
     constructor(props) {
         super(props);
@@ -43,7 +43,7 @@ class Home extends Component {
             localStorage.setItem('jwtToken', token);
             toast.success("Logged in successfully");
 
-            this.props.navigate('/dashboard');
+            this.props.navigate('/possystem');
         } catch (error) {
             this.setState({ error: error.message });
         }
@@ -88,5 +88,5 @@ class Home extends Component {
 
 export default function (props) {
     const navigate = useNavigate();
-    return <Home {...props} navigate={navigate} />;
+    return <PosLogin {...props} navigate={navigate} />;
 }

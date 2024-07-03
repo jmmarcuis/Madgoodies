@@ -1,196 +1,154 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "../components/Component Styles/Dashboard.css";
 import Madgoodieslogo from "./Images/madgoodies.png";
 import axios from "axios";
 import Inventory from "./Inventory System Components/Inventory";
-import GoodsModal from "./Inventory System Components/GoodsModal";
+import AddGoodModal from "./Inventory System Components/AddGoodModal";
+import EditGoodModal from "./Inventory System Components/EditGoodModal";
 import ConfirmDeleteModal from "./Inventory System Components/ConfirmDeleteModal";
+import { useNavigate } from 'react-router-dom';
 
-export class Dashboard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      goods: [],
-      showModal: false,
-      showDeleteModal: false, // State to control the delete confirmation modal
-      productName: "",
-      price: "",
-      stock: "",
-      description: "",
-      productImage: "",
-      isSubmitting: false,
-      editMode: false,
-      editId: null,
-      deleteId: null, // ID of the item to be deleted
-      activeComponent: "inventory", // default to inventory
-      fileName: "",
-      isLoading: false,
-    };
-  }
+const Dashboard = () => {
+  const [goods, setGoods] = useState([]);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [productName, setProductName] = useState("");
+  const [price, setPrice] = useState("");
+  const [stock, setStock] = useState("");
+  const [description, setDescription] = useState("");
+  const [productImage, setProductImage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [editId, setEditId] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [activeComponent, setActiveComponent] = useState("inventory");
+  const [fileName, setFileName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
-  static displayName = Dashboard.name;
-
-  componentDidMount() {
-    this.fetchGoods();
-  }
-
-  fetchGoods = async () => {
-    this.setState({ isLoading: true });
-    try {
-      const response = await axios.get("https://localhost:7162/api/good/all");
-      this.setState({ goods: response.data });
-    } catch (error) {
-      console.error("There was an error fetching the goods!", error);
-      toast.error("Failed to fetch goods");
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  };
-
-  deleteGood = async (id) => {
-    this.setState({ isLoading: true });
-    try {
-      await axios.delete(`https://localhost:7162/api/good/${id}`);
-      await this.fetchGoods(); // Refresh the list after deletion
-      toast.success("Good deleted successfully");
-    } catch (error) {
-      console.error("There was an error deleting the good!", error);
-      toast.error("Failed to delete good");
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  };
-
-  handleEdit = (id) => {
-    const editItem = this.state.goods.find((good) => good.productID === id);
-    if (editItem) {
-      this.setState({
-        editMode: true,
-        editId: id,
-        productName: editItem.productName,
-        price: editItem.price,
-        stock: editItem.stock,
-        description: editItem.description,
-        fileName: editItem.productImageUrl, // Store the current image URL
-        showModal: true,
-      });
-    }
-  };
-
-  handleUpdate = async (e) => {
-    e.preventDefault();
-    this.setState({ isLoading: true, isSubmitting: true });
-
-    const formData = new FormData();
-    formData.append("productName", this.state.productName);
-    formData.append("price", this.state.price);
-    formData.append("stock", this.state.stock);
-    formData.append("description", this.state.description);
-
-    // Only append the image if a new one was selected
-    if (this.state.productImage instanceof File) {
-      formData.append("productImage", this.state.productImage);
+  useEffect(() => {
+    // Check authentication status
+    const isAuthenticated = checkAuthentication();
+    if (!isAuthenticated) {
+      toast.error("Unauthorized Access not Allowed");
+      navigate("/"); // Redirect to login page
     } else {
-      // If no new image was selected, send the existing image URL
-      formData.append("productImageUrl", this.state.fileName);
+      fetchGoods();
     }
+  }, []);
+
+  const checkAuthentication = () => {
+    // Check if token exists in localStorage or implement your authentication logic here
+    const jwtToken = localStorage.getItem("jwtToken");
+    return jwtToken !== null; // Return true if authenticated, false otherwise
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setIsSubmitting(true);
 
     try {
-      await axios.put(
-        `https://localhost:7162/api/good/${this.state.editId}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      this.setState({
-        showModal: false,
-        editMode: false,
-        editId: null,
-        productName: "",
-        price: "",
-        stock: "",
-        description: "",
-        productImage: "",
-        fileName: "",
-      });
-      await this.fetchGoods();
+      const productData = { productName, price, stock, description };
+      await axios.put(`https://localhost:7162/api/good/${editId}`, productData);
+
+      if (productImage instanceof File) {
+        const formData = new FormData();
+        formData.append("productImage", productImage);
+        await axios.put(
+          `https://localhost:7162/api/good/${editId}/image`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      }
+
+      setShowEditModal(false);
+      setEditMode(false);
+      setEditId(null);
+      setProductName("");
+      setPrice("");
+      setStock("");
+      setDescription("");
+      setProductImage("");
+      setFileName("");
+      await fetchGoods();
       toast.success("Good updated successfully");
     } catch (error) {
       console.error("There was an error updating the good!", error);
       toast.error("Failed to update good");
     } finally {
-      setTimeout(() => {
-        this.setState({ isLoading: false, isSubmitting: false });
-      }, 2000);
-    }
-  };
-  handleDelete = (id) => {
-    this.setState({ showDeleteModal: true, deleteId: id });
-  };
-
-  confirmDelete = () => {
-    const { deleteId } = this.state;
-    this.setState({ showDeleteModal: false, deleteId: null }, () => {
-      this.deleteGood(deleteId);
-    });
-  };
-
-  handleLogout = () => {
-    localStorage.removeItem("token");
-    this.props.history.push("/login");
-  };
-
-  handleAddGoodsClick = () => {
-    this.setState({ showModal: true });
-  };
-
-  handleCloseModal = () => {
-    this.setState({
-      showModal: false,
-      fileName: "", // Reset fileName when closing the modal
-    });
-  };
-
-  handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      this.setState({
-        productImage: file,
-        fileName: file.name,
-      });
+      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
-  handleSubmit = async (e) => {
+  const fetchGoods = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get("https://localhost:7162/api/good/all");
+      setGoods(response.data);
+      toast.success("Fetched Data successfully");
+    } catch (error) {
+      console.error("There was an error fetching the goods!", error);
+      toast.error("Failed to fetch goods");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const deleteGood = async (id) => {
+    setIsLoading(true);
+    try {
+      await axios.delete(`https://localhost:7162/api/good/${id}`);
+      await fetchGoods();
+      toast.success("Good deleted successfully");
+    } catch (error) {
+      console.error("There was an error deleting the good!", error);
+      toast.error("Failed to delete good");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDelete = (id) => {
+    setShowDeleteModal(true);
+    setDeleteId(id);
+  };
+
+  const confirmDelete = () => {
+    setShowDeleteModal(false);
+    deleteGood(deleteId);
+  };
+
+  const handleAddGoodsClick = () => {
+    setShowAddModal(true);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    this.setState({ isLoading: true, isSubmitting: true });
+    setIsLoading(true);
+    setIsSubmitting(true);
 
-    this.setState({
-      productName: "",
-      price: "",
-      stock: "",
-      description: "",
-      productImage: "",
-      fileName: "",
-    });
-
-    // Disable the submit button
-    this.setState({ isSubmitting: true });
+    setProductName("");
+    setPrice("");
+    setStock("");
+    setDescription("");
+    setProductImage("");
+    setFileName("");
 
     const formData = new FormData();
-    formData.append("productName", this.state.productName);
-    formData.append("price", this.state.price);
-    formData.append("stock", this.state.stock);
-    formData.append("description", this.state.description);
-    formData.append("productImage", this.state.productImage);
+    formData.append("productName", productName);
+    formData.append("price", price);
+    formData.append("stock", stock);
+    formData.append("description", description);
+    formData.append("productImage", productImage);
 
     try {
       const response = await axios.post(
@@ -203,105 +161,183 @@ export class Dashboard extends Component {
         }
       );
       console.log(response.data);
-      this.setState({ showModal: false });
-      this.fetchGoods(); // Refresh the goods list after adding a new good
-
-      // Reset form fields
-      this.setState({
-        productName: "",
-        price: "",
-        stock: "",
-        description: "",
-        productImage: "",
-        fileName: "",
-      });
-    await this.fetchGoods();
-          toast.success("New good added successfully");
+      setShowAddModal(false);
+      await fetchGoods();
+      toast.success("New good added successfully");
     } catch (error) {
       console.error("There was an error adding the good!", error);
       toast.error("Failed to add new good");
     } finally {
-      this.setState({ isLoading: false, isSubmitting: false });
+      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
-  switchComponent = (component) => {
-    this.setState({ activeComponent: component });
+  const handleCloseAddModal = () => {
+    setShowAddModal(false);
+    setProductName("");
+    setPrice("");
+    setStock("");
+    setDescription("");
+    setProductImage("");
+    setFileName("");
   };
 
-  renderActiveComponent = () => {
-    const { activeComponent, goods } = this.state;
+  const handleEdit = (id) => {
+    const editItem = goods.find((good) => good.productID === id);
+    if (editItem) {
+      setEditMode(true);
+      setEditId(id);
+      setProductName(editItem.productName);
+      setPrice(editItem.price);
+      setStock(editItem.stock);
+      setDescription(editItem.description);
+      setFileName(editItem.productImageUrl);
+      setShowEditModal(true);
+    }
+  };
+
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    setEditId(null);
+    setProductName("");
+    setPrice("");
+    setStock("");
+    setDescription("");
+    setProductImage("");
+    setFileName("");
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case "productName":
+        setProductName(value);
+        break;
+      case "price":
+        setPrice(value);
+        break;
+      case "stock":
+        setStock(value);
+        break;
+      case "description":
+        setDescription(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProductImage(file);
+      setFileName(file.name);
+    }
+  };
+  const handleLogout = () => {
+    
+    localStorage.removeItem("jwtToken");
+    toast.success("Logged out successfully");
+
+    navigate("/"); // Redirect to the home page or login page
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const switchComponent = (component) => {
+    setActiveComponent(component);
+  };
+
+  const renderActiveComponent = () => {
+    const filteredGoods = goods.filter(good =>
+      good.productName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     switch (activeComponent) {
       case "inventory":
         return (
           <Inventory
-            goods={goods}
-            handleEdit={this.handleEdit}
-            handleDelete={this.handleDelete}
-            handleAddGoodsClick={this.handleAddGoodsClick} // Pass the handleAddGoodsClick function
+            goods={filteredGoods}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            handleAddGoodsClick={handleAddGoodsClick}
+            isLoading={isLoading}
+            showAddModal={showAddModal}
+            showEditModal={showEditModal}
+            handleCloseAddModal={handleCloseAddModal}
+            handleCloseEditModal={handleCloseEditModal}
+            handleSubmit={handleSubmit}
+            handleUpdate={handleUpdate}
+            handleChange={handleChange}
+            handleImageChange={handleImageChange}
+            isSubmitting={isSubmitting}
+            productName={productName}
+            price={price}
+            stock={stock}
+            description={description}
+            fileName={fileName}
+            searchQuery={searchQuery}
+            handleSearchChange={handleSearchChange}
           />
         );
       case "sales":
-        return <div>Sales Record Component</div>; // Replace with your SalesRecord component
+        return <div>Sales Record Component</div>;
       case "settings":
-        return <div>Settings Component</div>; // Replace with your Settings component
+        return <div>Settings Component</div>;
       default:
         return null;
     }
   };
 
-  render() {
-    const {
-      showModal,
-      showDeleteModal,
-      productName,
-      price,
-      stock,
-      description,
-      isSubmitting,
-      editMode,
-      fileName,
-      isLoading,
-    } = this.state;
-
-    return (
-      <div className="DashboardContainer">
-        <div className="SidePanel">
+  return (
+    <div className="dashboard">
+      <div className="SidePanel">
+        <div className="logo-container">
           <img src={Madgoodieslogo} alt="Logo" className="login-logo" />
-          <ul className="">
-            <li onClick={() => this.switchComponent("inventory")}>Inventory</li>
-            <li onClick={() => this.switchComponent("sales")}>Sales Record</li>
-            <li onClick={() => this.switchComponent("settings")}>Settings</li>
-            <li onClick={this.handleLogout}>Logout</li>
-          </ul>
         </div>
-        <div className="MainContent">{this.renderActiveComponent()}</div>
-
-        <GoodsModal
-          isOpen={showModal}
-          onRequestClose={this.handleCloseModal}
-          handleSubmit={this.handleSubmit}
-          handleUpdate={this.handleUpdate}
-          handleChange={this.handleChange}
-          handleImageChange={this.handleImageChange}
-          editMode={editMode}
-          isSubmitting={isSubmitting}
-          productName={productName}
-          price={price}
-          stock={stock}
-          description={description}
-          fileName={fileName}
-          isLoading={isLoading}
-        />
-
-        <ConfirmDeleteModal
-          isOpen={showDeleteModal}
-          onRequestClose={() => this.setState({ showDeleteModal: false })}
-          onConfirm={this.confirmDelete}
-        />
+        <ul className="menu">
+          <li
+            className={`menu-item ${activeComponent === "inventory" ? "active" : ""}`}
+            onClick={() => switchComponent("inventory")}
+          >
+            <i className="fas fa-box"></i> Inventory
+          </li>
+          <li
+            className={`menu-item ${activeComponent === "sales" ? "active" : ""}`}
+            onClick={() => switchComponent("sales")}
+            >
+              <i className="fas fa-chart-line"></i> Sales Record
+            </li>
+            <li
+              className={`menu-item ${activeComponent === "settings" ? "active" : ""}`}
+              onClick={() => switchComponent("settings")}
+            >
+              <i className="fas fa-cog"></i> Settings
+            </li>
+          </ul>
+          <div className="logout">
+            <ul className="menu">
+              <li className="menu-item" onClick={handleLogout}>
+                <i className="fas fa-sign-out-alt"></i> Logout
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="MainContent">{renderActiveComponent()}</div>
+  
+        {showDeleteModal && (
+          <ConfirmDeleteModal
+            isOpen={showDeleteModal}
+            onRequestClose={() => setShowDeleteModal(false)}
+            onConfirm={confirmDelete}
+            isLoading={isLoading}
+          />
+        )}
       </div>
     );
-  }
-}
-
-export default Dashboard;
+  };
+  
+  export default Dashboard;
