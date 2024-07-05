@@ -23,6 +23,7 @@ namespace BlogAPI.Controllers
             _cloudinary = cloudinary;
         }
 
+
         [HttpPost]
         [Route("add")]
         public async Task<IActionResult> AddGood([FromForm] CreateGood good, [FromForm] IFormFile productImage)
@@ -79,10 +80,31 @@ namespace BlogAPI.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteGood(int id)
+        public async Task<IActionResult> DeleteGood(int id)
         {
             try
             {
+                // Retrieve the good details
+                var good = _db.GetGoodById(id);
+                if (good == null)
+                {
+                    return NotFound("Good not found");
+                }
+
+                // Delete the image from Cloudinary
+                var publicId = GetPublicIdFromUrl(good.ProductImageUrl);
+                if (!string.IsNullOrEmpty(publicId))
+                {
+                    var deletionParams = new DeletionParams(publicId);
+                    var deletionResult = await _cloudinary.DestroyAsync(deletionParams);
+
+                    if (deletionResult.Result != "ok")
+                    {
+                        return StatusCode(500, "Failed to delete image from Cloudinary");
+                    }
+                }
+
+                // Perform the soft delete
                 _db.DeleteGood(id);
                 return Ok("Good deleted successfully");
             }
@@ -91,6 +113,17 @@ namespace BlogAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        // Helper method to extract publicId from the image URL
+        private string GetPublicIdFromUrl(string url)
+        {
+            var uri = new Uri(url);
+            var segments = uri.Segments;
+            var filename = segments[segments.Length - 1];
+            var publicId = filename.Substring(0, filename.LastIndexOf('.'));
+            return publicId;
+        }
+
 
         [HttpPut]
         [Route("{id}")]
@@ -159,5 +192,7 @@ namespace BlogAPI.Controllers
                 return StatusCode(500, new { error = $"Internal server error: {ex.Message}" });
             }
         }
+    
+
     }
 }

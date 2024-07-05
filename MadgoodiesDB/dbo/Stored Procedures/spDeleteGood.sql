@@ -2,6 +2,7 @@
     @ProductID INT
 AS
 BEGIN
-    DELETE FROM Goods
-    WHERE ProductID = @ProductID
+    UPDATE Goods
+    SET IsDeleted = 1
+    WHERE ProductID = @ProductID;
 END

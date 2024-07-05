@@ -1,0 +1,124 @@
+ 
+body {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.container{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.PosDashboard {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  transition: all 0.3s ease;
+}
+
+
+.PosSidePanel {
+  width: 220px;
+  background-color: #E7DDCD;
+  color: #1A1A1A;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  transition: all 0.3s ease;
+}
+
+
+.PosSidePanel.closed {
+  left: -220px;
+}
+
+
+.logo-container {
+  margin-bottom: 20px;
+}
+
+.PosSidePanel ul {
+  list-style-type: none;
+  padding: 0;
+  width: 100%; /* Full width for the list */
+}
+
+.PosSidePanel ul li {
+  padding: 10px 0;
+  text-align: left;
+  cursor: pointer;
+  width: 100%; /* Full width for the list items */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align items to the start */
+}
+
+.menu-item i {
+  font-size: 14px;
+  margin-right: 10px;
+  padding-left: 10px;
+}
+
+.menu-item {
+  margin-bottom: 10px;
+  width: 100%; /* Full width for the menu item */
+}
+
+.logout {
+  margin-top: auto; /* Push the logout button to the bottom */
+}
+
+.PosContent {
+  flex: 1;
+  padding: 20px;
+  margin-left: 220px;
+  transition: all 0.3s ease;
+}
+
+.sidebar-closed .PosContent {
+  margin-left: 0;
+}
+
+.toggle-sidebar {
+  position: fixed;
+  left: 220px;
+   background-color: #E7DDCD;
+  border: none;
+  color: #1A1A1A;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 0 16px 16px 0;
+  
+}
+
+.sidebar-closed .toggle-sidebar {
+  left: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .PosSidePanel {
+    width: 100%;
+    left: -100%;
+  }
+
+  .PosSidePanel.closed {
+    left: -100%;
+  }
+
+  .PosContent {
+    margin-left: 0;
+  }
+
+  .toggle-sidebar {
+    left: 0px;
+    z-index: 1000;
+  }
+}

@@ -94,6 +94,46 @@ namespace DataLibrary.Data
               true);
         }
 
+        public ListGoods GetGoodById(int productID)
+        {
+            return _db.LoadData<ListGoods, dynamic>(
+                "dbo.spGetGoodById",
+                new { ProductID = productID },
+                connectionStringName,
+                true).FirstOrDefault();
+        }
 
+
+
+        public void CreateOrder(decimal totalAmount, bool isFulfilled, List<OrderDetailModel> orderDetails)
+        {
+            // Insert the order and get the new OrderID
+            var orderId = _db.LoadData<int, dynamic>("dbo.spInsertOrder",
+                new { totalAmount, isFulfilled }, connectionStringName, true).FirstOrDefault();
+
+            // Insert each order detail and update stock
+            foreach (var detail in orderDetails)
+            {
+                _db.SaveData("dbo.spInsertOrderDetail",
+                    new { orderId, detail.ProductID, detail.Quantity, detail.Price },
+                    connectionStringName, true);
+
+                // Update the stock for each product
+                _db.SaveData("dbo.spUpdateProductStock",
+                    new { detail.ProductID, detail.Quantity },
+                    connectionStringName, true);
+            }
+        }
+
+        public IEnumerable<OrderModel> GetOrders()
+        {
+            return _db.LoadData<OrderModel, dynamic>("dbo.spGetOrders", new { }, connectionStringName, true);
+        }
+
+        public IEnumerable<OrderDetailModel> GetOrderDetails(int orderId)
+        {
+            return _db.LoadData<OrderDetailModel, dynamic>("dbo.spGetOrderDetails",
+                new { OrderID = orderId }, connectionStringName, true);
+        }
     }
 }

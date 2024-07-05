@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE [dbo].[spGetAllGoods]
+﻿CREATE PROCEDURE [dbo].[spGetGoodById]
+    @ProductID INT
 AS
 BEGIN
     SELECT 
@@ -9,5 +10,7 @@ BEGIN
         Stock,
         Description
     FROM 
-        Goods WHERE IsDeleted = 0;
+        Goods 
+    WHERE 
+        ProductID = @ProductID AND IsDeleted = 0;
 END

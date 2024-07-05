@@ -69,9 +69,15 @@
     <Build Include="dbo\Stored Procedures\spEditGoods.sql" />
     <Build Include="dbo\Stored Procedures\GetAllGoods.sql" />
     <Build Include="dbo\Stored Procedures\spUpdateGood.sql" />
-    <Build Include="dbo\Tables\OrderItems.sql" />
     <Build Include="dbo\Tables\Orders.sql" />
     <Build Include="dbo\Stored Procedures\spUpdateGoodImage.sql" />
+    <Build Include="dbo\Tables\OrderDetails.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertOrder.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertOrderDetail.sql" />
+    <Build Include="dbo\Stored Procedures\spGetOrderDetails.sql" />
+    <Build Include="dbo\Stored Procedures\spGetOrders.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateProductStock.sql" />
+    <Build Include="dbo\Stored Procedures\spGetGoodById.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MadgoodiesDB.publish.xml" />
