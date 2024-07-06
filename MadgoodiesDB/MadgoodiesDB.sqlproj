@@ -78,6 +78,7 @@
     <Build Include="dbo\Stored Procedures\spGetOrders.sql" />
     <Build Include="dbo\Stored Procedures\spUpdateProductStock.sql" />
     <Build Include="dbo\Stored Procedures\spGetGoodById.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateOrderStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MadgoodiesDB.publish.xml" />

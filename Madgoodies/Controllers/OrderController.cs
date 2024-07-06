@@ -1,57 +1,84 @@
 using DataLibrary.Data;
 using DataLibrary.Models;
+using DataLibrary.Models.DataLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 
 namespace BlogAPI.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class OrdersController : ControllerBase
+   [ApiController]
+[Route("api/[controller]")]
+public class OrdersController : ControllerBase
+{
+    private readonly ISqlData _db;
+
+    public OrdersController(ISqlData db)
     {
-        private readonly ISqlData _db;
+        _db = db;
+    }
 
-        public OrdersController(ISqlData db)
+    [HttpPost("confirm")]
+    public IActionResult ConfirmOrder([FromBody] OrderRequest request)
+    {
+        try
         {
-            _db = db;
+            _db.CreateOrder(request.TotalAmount, request.OrderStatus, request.OrderDetails);
+            return Ok("Order confirmed successfully.");
         }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
 
-        [HttpPost("confirm")]
-        public IActionResult ConfirmOrder([FromBody] OrderRequest request)
+    [HttpGet]
+    public IActionResult GetOrders()
+    {
+        try
+        {
+            var orders = _db.GetOrders();
+            return Ok(orders);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+
+    [HttpGet("{orderId}")]
+    public IActionResult GetOrderDetails(int orderId)
+    {
+        try
+        {
+            var orderDetails = _db.GetOrderDetails(orderId);
+            return Ok(orderDetails);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+
+    [HttpGet("withdetails")]
+    public IActionResult GetOrdersWithDetails()
+    {
+        try
+        {
+            var ordersWithDetails = _db.GetOrdersWithDetails();
+            return Ok(ordersWithDetails);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+        [HttpPut("status")]
+        public IActionResult UpdateOrderStatus([FromBody] UpdateOrderStatusRequest request)
         {
             try
             {
-                _db.CreateOrder(request.TotalAmount, request.IsFulfilled, request.OrderDetails);
-                return Ok("Order confirmed successfully.");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        [HttpGet]
-        public IActionResult GetOrders()
-        {
-            try
-            {
-                var orders = _db.GetOrders();
-                return Ok(orders);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        [HttpGet("{orderId}")]
-        public IActionResult GetOrderDetails(int orderId)
-        {
-            try
-            {
-                var orderDetails = _db.GetOrderDetails(orderId);
-                return Ok(orderDetails);
+                _db.UpdateOrderStatus(request.OrderID, request.NewStatus);
+                return Ok($"Order status updated successfully for Order ID: {request.OrderID}");
             }
             catch (Exception ex)
             {
@@ -59,4 +86,5 @@ namespace BlogAPI.Controllers
             }
         }
     }
-}
+
+    }

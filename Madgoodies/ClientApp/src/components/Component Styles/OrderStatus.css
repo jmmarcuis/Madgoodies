@@ -1,0 +1,126 @@
+.orderstatus-flex {
+    display: flex;
+    gap: 20px;
+    height: 100vh;
+    overflow: hidden;
+    font-family: "Poppins", sans-serif;
+}
+
+.orderstatus-catalogue-flex {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 20px;
+    padding-left: 5px;
+}
+
+.orderstatus-filters {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.orderstatus-filters p {
+    cursor: pointer;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+.orderstatus-filters p::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #000;
+    transition: width 0.3s ease;
+}
+
+.orderstatus-filters p.active::after {
+    width: 100%;
+}
+
+.orderstatus-bar {
+    width: 360px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    border-left: 1px solid #ccc;
+    padding-left: 20px;
+}
+
+.orderstatus-bar-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.orderstatus-bar-flex h3 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.orderstatus-items {
+    margin-bottom: 20px;
+}
+
+.orderstatus-items table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.orderstatus-items th, .orderstatus-items td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.orderstatus-button-container-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+.CompleteOrderButton,
+.CancelOrderButton,
+.RefundOrderButton {
+    appearance: none;
+    background-color: transparent;
+    border: 2px solid #1a1a1a;
+    border-radius: 15px;
+    box-sizing: border-box;
+    color: #1a1a1a;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0;
+    min-height: 60px;
+    min-width: 0;
+    outline: none;
+    padding: 16px 24px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 100%;
+    will-change: transform;
+}
+
+.CompleteOrderButton:hover,
+.CancelOrderButton:hover,
+.RefundOrderButton:hover {
+    background-color: #1a1a1a;
+    color: #fff;
+}
+

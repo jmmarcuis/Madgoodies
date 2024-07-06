@@ -75,7 +75,7 @@
 .InventoryTable th,
 .InventoryTable td {
   padding: 10px;
-  border: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
   text-align: left;
 }
 
@@ -105,12 +105,18 @@
     padding: 8px;
     font-size: 14px;
   }
+
+  
+
+ 
 }
 
 @media (max-width: 480px) {
   .InventoryFlexContainer {
     flex-direction: column;
     align-items: stretch;
+    margin-top: 40px;
+
   }
   .InventorySearch {
     margin-right: 0;

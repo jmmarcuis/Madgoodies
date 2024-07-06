@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace DataLibrary.Models
 {
-    public class OrderRequest
+    namespace DataLibrary.Models
     {
-        public decimal TotalAmount { get; set; }
-        public bool IsFulfilled { get; set; }
-        public List<OrderDetailModel> OrderDetails { get; set; }
+        public class OrderRequest
+        {
+            public decimal TotalAmount { get; set; }
+            public string OrderStatus { get; set; }
+            public List<OrderDetailModel> OrderDetails { get; set; }
+        }
     }
+
+ 
 }

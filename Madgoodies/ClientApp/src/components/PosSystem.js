@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import Madgoodieslogo from "./Images/madgoodies.png";
 import axios from "axios";
 import Cart from "./POS System Components/Cart";
+import OrderStatus from "./POS System Components/OrderStatus";
 import { useNavigate } from "react-router-dom";
 import "./Component Styles/PosSystem.css";
 
@@ -11,7 +12,7 @@ const PosSystem = () => {
   const [activeComponent, setActiveComponent] = useState("inventory");
   const [goods, setGoods] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     const isAuthenticated = checkAuthentication();
@@ -22,9 +23,8 @@ const PosSystem = () => {
   }, [navigate]);
 
   useEffect(() => {
-
-    
-    axios.get("/api/goods")
+    axios
+      .get("/api/goods")
       .then((response) => {
         setGoods(response.data.goods);
       })
@@ -32,8 +32,6 @@ const PosSystem = () => {
         console.error("Error fetching goods:", error);
       });
   }, []);
-
-
 
   const checkAuthentication = () => {
     const jwtToken = localStorage.getItem("jwtToken");
@@ -45,7 +43,7 @@ const PosSystem = () => {
   };
 
   const renderActiveComponent = () => {
-    const filteredGoods = goods.filter(good =>
+    const filteredGoods = goods.filter((good) =>
       good.productName.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
@@ -53,7 +51,7 @@ const PosSystem = () => {
       case "cart":
         return <Cart />;
       case "sales":
-        return <div>Sales Record Component</div>;
+        return <OrderStatus/>;
       case "settings":
         return <div>Settings Component</div>;
       default:
@@ -61,9 +59,12 @@ const PosSystem = () => {
     }
   };
 
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+  const toggleSidebar = (event) => {
+    if (event && event.target.classList.contains("sidebar-overlay")) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
   };
 
   const handleLogout = () => {
@@ -72,27 +73,38 @@ const PosSystem = () => {
   };
 
   return (
-    <div className={`PosDashboard ${isSidebarOpen ? '' : 'sidebar-closed'}`}>
-      <div className={`PosSidePanel ${isSidebarOpen ? '' : 'closed'}`}>
-        
+    <div className={`PosDashboard ${isSidebarOpen ? "sidebar-open" : ""}`}>
+      {isSidebarOpen && (
+        <div className="sidebar-overlay" onClick={toggleSidebar}></div>
+      )}
+      <div className={`PosSidePanel ${isSidebarOpen ? "open" : ""}`}>
+        <button className="close-sidebar" onClick={toggleSidebar}>
+          ×
+        </button>
         <div className="logo-container">
           <img src={Madgoodieslogo} alt="Logo" className="login-logo" />
         </div>
         <ul className="menu">
           <li
-            className={`menu-item ${activeComponent === "cart" ? "active" : ""}`}
+            className={`menu-item ${
+              activeComponent === "cart" ? "active" : ""
+            }`}
             onClick={() => switchComponent("cart")}
           >
             <i className="fas fa-book"></i> Catalogue
           </li>
           <li
-            className={`menu-item ${activeComponent === "sales" ? "active" : ""}`}
+            className={`menu-item ${
+              activeComponent === "sales" ? "active" : ""
+            }`}
             onClick={() => switchComponent("sales")}
           >
             <i className="fas fa-shopping-cart"></i> Orders
           </li>
           <li
-            className={`menu-item ${activeComponent === "settings" ? "active" : ""}`}
+            className={`menu-item ${
+              activeComponent === "settings" ? "active" : ""
+            }`}
             onClick={() => switchComponent("settings")}
           >
             <i className="fas fa-cog"></i> Settings
@@ -108,7 +120,7 @@ const PosSystem = () => {
       </div>
       <div className="PosContent">
         <button className="toggle-sidebar" onClick={toggleSidebar}>
-          {isSidebarOpen ? '◀' : '▶'}
+          ☰
         </button>
         {renderActiveComponent()}
       </div>

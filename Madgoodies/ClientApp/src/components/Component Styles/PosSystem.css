@@ -16,21 +16,12 @@ body {
   height: 100vh;
   width: 100vw;
   transition: all 0.3s ease;
+  overflow-x: hidden;
 }
 
 
-.PosSidePanel {
-  width: 220px;
-  background-color: #E7DDCD;
-  color: #1A1A1A;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
-  position: fixed;
+.PosSidePanel.open {
   left: 0;
-  transition: all 0.3s ease;
 }
 
 
@@ -42,22 +33,52 @@ body {
 .logo-container {
   margin-bottom: 20px;
 }
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 150; 
+  display: none;
+}
+
+.sidebar-open .sidebar-overlay {
+  display: block;
+}
 
 .PosSidePanel ul {
   list-style-type: none;
   padding: 0;
   width: 100%; /* Full width for the list */
 }
-
 .PosSidePanel ul li {
   padding: 10px 0;
   text-align: left;
   cursor: pointer;
-  width: 100%; /* Full width for the list items */
+  width: 100%; 
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Align items to the start */
+  justify-content: flex-start;  
 }
+
+.PosSidePanel {
+  width: 220px;
+  background-color: #E7DDCD;
+  color: #1A1A1A;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  position: fixed;
+  left: -220px;
+  top: 0;
+  transition: all 0.3s ease;
+  z-index: 160;
+}
+
 
 .menu-item i {
   font-size: 14px;
@@ -77,48 +98,58 @@ body {
 .PosContent {
   flex: 1;
   padding: 20px;
-  margin-left: 220px;
-  transition: all 0.3s ease;
+   transition: all 0.3s ease;
 }
 
 .sidebar-closed .PosContent {
   margin-left: 0;
 }
-
 .toggle-sidebar {
   position: fixed;
-  left: 220px;
-   background-color: #E7DDCD;
+  left: 10px;
+  top: 10px;
+  background-color: transparent;
   border: none;
   color: #1A1A1A;
   padding: 10px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 0 16px 16px 0;
-  
+  z-index: 200;
+}
+
+.close-sidebar {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
 }
 
 .sidebar-closed .toggle-sidebar {
   left: 0;
 }
+ 
 
-/* Responsive design */
-@media (max-width: 768px) {
+@media (min-width: 769px) {
   .PosSidePanel {
-    width: 100%;
-    left: -100%;
+    left: 0;
   }
-
-  .PosSidePanel.closed {
-    left: -100%;
+  .sidebar-overlay {
+    display: none !important;
   }
 
   .PosContent {
-    margin-left: 0;
+    margin-left: 220px;
   }
 
   .toggle-sidebar {
-    left: 0px;
-    z-index: 1000;
+    display: none;
+  }
+
+  .close-sidebar {
+    display: none;
   }
 }
+ 
+ 

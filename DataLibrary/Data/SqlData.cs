@@ -103,24 +103,22 @@ namespace DataLibrary.Data
                 true).FirstOrDefault();
         }
 
-
-
-        public void CreateOrder(decimal totalAmount, bool isFulfilled, List<OrderDetailModel> orderDetails)
+        public void CreateOrder(decimal totalAmount, string orderStatus, List<OrderDetailModel> orderDetails)
         {
             // Insert the order and get the new OrderID
             var orderId = _db.LoadData<int, dynamic>("dbo.spInsertOrder",
-                new { totalAmount, isFulfilled }, connectionStringName, true).FirstOrDefault();
+                new { TotalAmount = totalAmount, OrderStatus = orderStatus }, connectionStringName, true).FirstOrDefault();
 
-            // Insert each order detail and update stock
+            // Insert each order detail
             foreach (var detail in orderDetails)
             {
                 _db.SaveData("dbo.spInsertOrderDetail",
-                    new { orderId, detail.ProductID, detail.Quantity, detail.Price },
+                    new { OrderID = orderId, ProductID = detail.ProductID, detail.ProductName, Quantity = detail.Quantity, Price = detail.Price },
                     connectionStringName, true);
 
-                // Update the stock for each product
+                // Update the stock for each product (if you want to keep this functionality)
                 _db.SaveData("dbo.spUpdateProductStock",
-                    new { detail.ProductID, detail.Quantity },
+                    new { ProductID = detail.ProductID, Quantity = detail.Quantity },
                     connectionStringName, true);
             }
         }
@@ -135,5 +133,34 @@ namespace DataLibrary.Data
             return _db.LoadData<OrderDetailModel, dynamic>("dbo.spGetOrderDetails",
                 new { OrderID = orderId }, connectionStringName, true);
         }
+
+        public IEnumerable<dynamic> GetOrdersWithDetails()
+        {
+            var orders = GetOrders();
+            var ordersWithDetails = orders.Select(order =>
+            {
+                var details = GetOrderDetails(order.OrderID);
+                return new
+                {
+                    order.OrderID,
+                     order.OrderDate,
+                    order.TotalAmount,
+                    order.orderStatus,
+                    OrderDetails = details
+                };
+            });
+            return ordersWithDetails;
+        }
+
+        public void UpdateOrderStatus(int orderId, string newStatus)
+{
+    _db.SaveData("dbo.spUpdateOrderStatus",
+        new { OrderID = orderId, NewStatus = newStatus },
+        connectionStringName,
+        true);
+}
     }
+
+ 
+ 
 }

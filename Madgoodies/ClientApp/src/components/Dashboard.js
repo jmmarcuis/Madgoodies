@@ -7,7 +7,8 @@ import Inventory from "./Inventory System Components/Inventory";
 import AddGoodModal from "./Inventory System Components/AddGoodModal";
 import EditGoodModal from "./Inventory System Components/EditGoodModal";
 import ConfirmDeleteModal from "./Inventory System Components/ConfirmDeleteModal";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { HubConnectionBuilder } from "@microsoft/signalr";
 
 const Dashboard = () => {
   const [goods, setGoods] = useState([]);
@@ -27,7 +28,16 @@ const Dashboard = () => {
   const [fileName, setFileName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [hubConnection, setHubConnection] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const navigate = useNavigate();
+
+  const checkAuthentication = () => {
+    // Check if token exists in localStorage or implement your authentication logic here
+    const jwtToken = localStorage.getItem("jwtToken");
+    return jwtToken !== null; // Return true if authenticated, false otherwise
+  };
 
   useEffect(() => {
     // Check authentication status
@@ -40,11 +50,40 @@ const Dashboard = () => {
     }
   }, []);
 
-  const checkAuthentication = () => {
-    // Check if token exists in localStorage or implement your authentication logic here
-    const jwtToken = localStorage.getItem("jwtToken");
-    return jwtToken !== null; // Return true if authenticated, false otherwise
-  };
+  useEffect(() => {
+    // Initialize SignalR Hub Connection
+    const newHubConnection = new HubConnectionBuilder()
+      .withUrl("https://localhost:7162/FetchHub")
+      .build();
+
+    setHubConnection(newHubConnection);
+
+    newHubConnection
+      .start()
+      .then(() => {
+        console.log("SignalR Connected");
+        toast.success("Connected to SignalR!");
+      })
+      .catch((err) => {
+        console.error("SignalR Connection Error: ", err);
+        toast.error("Failed to connect to SignalR");
+      });
+
+    // Handle incoming SignalR messages or updates
+    newHubConnection.on("ReceiveMessage", (message) => {
+      console.log("Received message from SignalR:", message);
+      fetchGoods(); // Fetch updated data
+    });
+
+    newHubConnection.onclose(() => {
+      toast.error("Disconnected from SignalR");
+      console.log("Disconnected from SignalR");
+    });
+
+    return () => {
+      newHubConnection.stop();
+    };
+  }, []);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -236,7 +275,6 @@ const Dashboard = () => {
     }
   };
   const handleLogout = () => {
-    
     localStorage.removeItem("jwtToken");
     toast.success("Logged out successfully");
 
@@ -252,7 +290,7 @@ const Dashboard = () => {
   };
 
   const renderActiveComponent = () => {
-    const filteredGoods = goods.filter(good =>
+    const filteredGoods = goods.filter((good) =>
       good.productName.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
@@ -285,6 +323,8 @@ const Dashboard = () => {
         );
       case "sales":
         return <div>Sales Record Component</div>;
+      case "users":
+        return <div>Users</div>;
       case "settings":
         return <div>Settings Component</div>;
       default:
@@ -292,52 +332,88 @@ const Dashboard = () => {
     }
   };
 
+  const toggleSidebar = (event) => {
+    if (event && event.target.classList.contains("sidebar-overlay")) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
+  };
+
   return (
-    <div className="dashboard">
-      <div className="SidePanel">
+    <div
+      className={`InventoryDashboard ${isSidebarOpen ? "sidebar-open" : ""}`}
+    >
+      {isSidebarOpen && (
+        <div className="sidebar-overlay" onClick={toggleSidebar}></div>
+      )}
+      <div className={`PosSidePanel ${isSidebarOpen ? "open" : ""}`}>
+        <button className="close-sidebar" onClick={toggleSidebar}>
+          ×
+        </button>
+
         <div className="logo-container">
           <img src={Madgoodieslogo} alt="Logo" className="login-logo" />
         </div>
         <ul className="menu">
           <li
-            className={`menu-item ${activeComponent === "inventory" ? "active" : ""}`}
+            className={`menu-item ${
+              activeComponent === "inventory" ? "active" : ""
+            }`}
             onClick={() => switchComponent("inventory")}
           >
             <i className="fas fa-box"></i> Inventory
           </li>
           <li
-            className={`menu-item ${activeComponent === "sales" ? "active" : ""}`}
+            className={`menu-item ${
+              activeComponent === "sales" ? "active" : ""
+            }`}
             onClick={() => switchComponent("sales")}
-            >
-              <i className="fas fa-chart-line"></i> Sales Record
-            </li>
-            <li
-              className={`menu-item ${activeComponent === "settings" ? "active" : ""}`}
-              onClick={() => switchComponent("settings")}
-            >
-              <i className="fas fa-cog"></i> Settings
+          >
+            <i className="fas fa-chart-line"></i> Sales Record
+          </li>
+          <li
+            className={`menu-item ${
+              activeComponent === "users" ? "active" : ""
+            }`}
+            onClick={() => switchComponent("users")}
+          >
+            <i className="fas fa-user"></i> Users
+          </li>
+          <li
+            className={`menu-item ${
+              activeComponent === "settings" ? "active" : ""
+            }`}
+            onClick={() => switchComponent("settings")}
+          >
+            <i className="fas fa-cog"></i> Settings
+          </li>
+        </ul>
+        <div className="logout">
+          <ul className="menu">
+            <li className="menu-item" onClick={handleLogout}>
+              <i className="fas fa-sign-out-alt"></i> Logout
             </li>
           </ul>
-          <div className="logout">
-            <ul className="menu">
-              <li className="menu-item" onClick={handleLogout}>
-                <i className="fas fa-sign-out-alt"></i> Logout
-              </li>
-            </ul>
-          </div>
         </div>
-        <div className="MainContent">{renderActiveComponent()}</div>
-  
-        {showDeleteModal && (
-          <ConfirmDeleteModal
-            isOpen={showDeleteModal}
-            onRequestClose={() => setShowDeleteModal(false)}
-            onConfirm={confirmDelete}
-            isLoading={isLoading}
-          />
-        )}
       </div>
-    );
-  };
-  
-  export default Dashboard;
+      <div className="MainContent">
+        <button className="toggle-sidebar" onClick={toggleSidebar}>
+          ☰
+        </button>
+        {renderActiveComponent()}
+      </div>
+
+      {showDeleteModal && (
+        <ConfirmDeleteModal
+          isOpen={showDeleteModal}
+          onRequestClose={() => setShowDeleteModal(false)}
+          onConfirm={confirmDelete}
+          isLoading={isLoading}
+        />
+      )}
+    </div>
+  );
+};
+
+export default Dashboard;

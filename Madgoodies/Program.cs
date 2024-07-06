@@ -1,3 +1,4 @@
+using GoodsHub.Hubs;
 using CloudinaryDotNet;
 using DataLibrary.Data;
 using DataLibrary.Database;
@@ -6,7 +7,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
- 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 var builder = WebApplication.CreateBuilder(args);
 
 // Cloudinary credentials
@@ -21,17 +25,17 @@ builder.Services.AddControllers();
 builder.Services.AddTransient<ISqlData, SqlData>();
 builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+builder.Services.AddSignalR();
 
-// Configure CORS
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
+    options.AddPolicy("AllowReactApp",
+        builder => builder
+            .WithOrigins("http://localhost:3000") // Replace with your React app's URL
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
 });
 
 // Configure JWT Authentication
@@ -60,11 +64,22 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
 app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
+app.UseCors("AllowSpecificOrigins");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseStaticFiles();
+app.UseRouting(); app.UseCors("AllowReactApp");
+app.MapHub<FetchGoodHub>("/FetchHub");
 
 app.MapControllerRoute(
     name: "default",

@@ -3,17 +3,28 @@
   font-family: Poppins;
 }
 
+.InventoryDashboard {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  transition: all 0.3s ease;
+  overflow-x: hidden;
+}
+
 .SidePanel {
   width: 220px;
   background-color: #E7DDCD;
-  color: #000000;
-  position: fixed;
+  color: #1A1A1A;
   height: 100vh;
   display: flex;
   flex-direction: column;
   padding: 20px;
+  box-sizing: border-box;
+  position: fixed;
+  left: -220px;
   top: 0;
-  left: 0;
+  transition: all 0.3s ease;
+  z-index: 160;
 }
 
 .SidePanel h2 {
@@ -31,17 +42,16 @@
   font-size: 14px;
   margin-right: 10px;
   padding-left: 10px;
-
 }
-.menu-item{
-  margin-bottom: 10px;
 
+.menu-item {
+  margin-bottom: 10px;
 }
 
 .menu-item.active,
 .menu-item:hover {
   background-color: #1b1b1b;
-  border: 1px solid#1b1b1b;
+  border: 1px solid #1b1b1b;
   border-radius: 16px;
   color: #f7f7f7;
 }
@@ -52,12 +62,10 @@
   cursor: pointer;
 }
 
- 
-
 .MainContent {
-  padding: 30px;
-  margin-left: 250px;
-  
+  flex: 1;
+  padding: 20px;
+  transition: all 0.3s ease;
 }
 
 .login-logo {
@@ -68,4 +76,43 @@
 .logout {
   margin-top: auto;
   text-align: center;
+}
+
+@media (min-width: 769px) {
+  .SidePanel {
+    left: 0;
+  }
+  .sidebar-overlay {
+    display: none !important;
+  }
+
+  .MainContent {
+    margin-left: 220px;
+  }
+
+  .toggle-sidebar {
+    display: none;
+  }
+
+  .close-sidebar {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .toggle-sidebar {
+    display: block;
+  }
+
+  .sidebar-open .toggle-sidebar {
+    display: none;
+  }
+
+  .sidebar-overlay {
+    display: block;
+  }
+
+  .SidePanel {
+    left: 0;
+  }
 }

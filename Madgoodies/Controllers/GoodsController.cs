@@ -7,6 +7,8 @@ using CloudinaryDotNet.Actions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
+using GoodsHub.Hubs;
 
 namespace BlogAPI.Controllers
 {
@@ -16,11 +18,13 @@ namespace BlogAPI.Controllers
     {
         private readonly ISqlData _db;
         private readonly Cloudinary _cloudinary;
+        private readonly IHubContext<FetchGoodHub> _hubContext;
 
-        public GoodController(ISqlData db, Cloudinary cloudinary)
+        public GoodController(ISqlData db, Cloudinary cloudinary, IHubContext<FetchGoodHub> hubContext)
         {
             _db = db;
             _cloudinary = cloudinary;
+            _hubContext = hubContext;
         }
 
 
@@ -48,6 +52,7 @@ namespace BlogAPI.Controllers
 
                 // Ensure the correct field is used for the image URL
                 _db.AddGood(imageUrl, good.ProductName, good.Price, good.Stock, good.Description);
+                await _hubContext.Clients.All.SendAsync("ReceiveMessage", "New good added");
                 return Ok("Good added successfully");
             }
             catch (Exception ex)
@@ -106,6 +111,8 @@ namespace BlogAPI.Controllers
 
                 // Perform the soft delete
                 _db.DeleteGood(id);
+                await _hubContext.Clients.All.SendAsync("ReceiveMessage", "Good Deleted");
+
                 return Ok("Good deleted successfully");
             }
             catch (Exception ex)
@@ -114,7 +121,6 @@ namespace BlogAPI.Controllers
             }
         }
 
-        // Helper method to extract publicId from the image URL
         private string GetPublicIdFromUrl(string url)
         {
             var uri = new Uri(url);
@@ -127,7 +133,7 @@ namespace BlogAPI.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult UpdateGood(int id, [FromBody] UpdateGood good)
+        public async Task<IActionResult> UpdateGood(int id, [FromBody] UpdateGood good)
         {
             try
             {
@@ -154,6 +160,8 @@ namespace BlogAPI.Controllers
                 Console.WriteLine($"Updating Good: ID={id}, ProductName={good.ProductName}, Price={good.Price}, Stock={good.Stock}, Description={good.Description}");
 
                 _db.UpdateGoodDetails(id, good.ProductName, good.Price, good.Stock, good.Description);
+                await _hubContext.Clients.All.SendAsync("ReceiveMessage", "New good added");
+
                 return Ok(new { message = "Good updated successfully", updatedGood = good });
             }
             catch (Exception ex)
@@ -161,6 +169,7 @@ namespace BlogAPI.Controllers
                 return StatusCode(500, new { error = $"Internal server error: {ex.Message}" });
             }
         }
+
 
         [HttpPut]
         [Route("{id}/image")]
@@ -192,7 +201,7 @@ namespace BlogAPI.Controllers
                 return StatusCode(500, new { error = $"Internal server error: {ex.Message}" });
             }
         }
-    
+
 
     }
 }

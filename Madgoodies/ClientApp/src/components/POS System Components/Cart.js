@@ -6,9 +6,11 @@ import "../Component Styles/Cart.css";
 import CartItem from "./CartItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faSortAmountDown, faSortAmountUp } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import OrderConfirmationModal from "./OrderConfirmationModal";
+import { HubConnectionBuilder } from "@microsoft/signalr";
 
 const ProductList = () => {
   const [items, setItems] = useState([]);
@@ -18,16 +20,41 @@ const ProductList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sortOption, setSortOption] = useState("name");
+  const [hubConnection, setHubConnection] = useState(null);
 
+  useEffect(() => {
+    // Initialize SignalR Hub Connection
+    const newHubConnection = new HubConnectionBuilder()
+      .withUrl("https://localhost:7162/FetchHub") 
+      .build();
 
+    setHubConnection(newHubConnection);
+
+    newHubConnection.start()
+      .then(() => {
+        console.log("SignalR Connected");
+       })
+      .catch(err => {
+        console.error("SignalR Connection Error: ", err);
+        toast.error('Failed to connect to SignalR');
+      });
+
+    // Handle incoming SignalR messages or updates
+    newHubConnection.on("ReceiveMessage", (message) => {
+      console.log("Received message from SignalR:", message);
+      fetchMoreData(); // Fetch updated data
+    });
+
+    newHubConnection.onclose(() => {
+      });
+
+    return () => {
+      newHubConnection.stop();
+    };
+  }, []);
 
   useEffect(() => {
     fetchMoreData();
-    // Periodic fetch every 5 seconds
-    const intervalId = setInterval(fetchMoreData, 5000);
-
-    // Cleanup interval on component unmount
-    return () => clearInterval(intervalId);
   }, []);
 
   const fetchMoreData = async () => {
@@ -53,9 +80,13 @@ const ProductList = () => {
   const sortProducts = (products) => {
     return products.sort((a, b) => {
       switch (sortOption) {
-        case "price":
+        case "price-low":
           return a.price - b.price;
-        case "stock":
+        case "price-high":
+          return b.price - a.price;
+        case "stock-low":
+          return a.stock - b.stock;
+        case "stock-high":
           return b.stock - a.stock;
         case "name":
         default:
@@ -69,8 +100,6 @@ const ProductList = () => {
       product.productName.toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
-
-
 
   const handleQuantityChange = (id, newQuantity) => {
     const product = items.find(p => p.productID === id);
@@ -151,7 +180,7 @@ const ProductList = () => {
         pauseOnHover
       />
       <div className="product-catalogue-flex">
-      <div className="product-filters">
+        <div className="product-filters">
           <input
             type="text"
             placeholder="Search products..."
@@ -159,36 +188,37 @@ const ProductList = () => {
             onChange={handleSearchChange}
           />
           <select value={sortOption} onChange={handleSortChange}>
-            <option value="name">Sort by Name</option>
-            <option value="price">Sort by Price</option>
-            <option value="stock">Sort by Stock</option>
+            <option value="name">Sort by Name 🔎</option>
+            <option value="price-low">Sort by Price 🏷️🔽 </option>
+            <option value="price-high"> Sort by Price 🏷️🔼</option>
+            <option value="stock-low">Sort by Stock 📉</option>
+            <option value="stock-high"> Sort by Stock 📈  </option>
           </select>
         </div>
         <InfiniteScroll
-  dataLength={items.length}
-  next={fetchMoreData}
-  hasMore={hasMore}
-  className="product-grid"
->
-  {filteredItems.map((product) => (
-    <GoodsCard
-      key={product.productID}
-      id={product.productID}
-      productName={product.productName}
-      price={product.price}
-      stock={product.stock}
-      imageUrl={product.productImageUrl}
-      onAddToCart={() => checkStockAndAddToCart(product)}
-      isDisabled={cartItems.some(item => item.productID === product.productID)}
-    />
-  ))}
-</InfiniteScroll>
-
+          dataLength={items.length}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          className="product-grid"
+        >
+          {filteredAndSortedItems.map((product) => (
+            <GoodsCard
+              key={product.productID}
+              id={product.productID}
+              productName={product.productName}
+              price={product.price}
+              stock={product.stock}
+              imageUrl={product.productImageUrl}
+              onAddToCart={() => checkStockAndAddToCart(product)}
+              isDisabled={product.stock === 0} // Disable card if stock is 0
+            />
+          ))}
+        </InfiniteScroll>
       </div>
       <div className="cart-bar">
         <div className="cart-order-bar-flex">
           <h3>New Order</h3>
-          <i> <FontAwesomeIcon onClick={() => setCartItems([])} icon={faTrash} /> </i>
+          <i><FontAwesomeIcon onClick={() => setCartItems([])} icon={faTrash} /></i>
         </div>
         <div className="cart-items">
           {cartItems.length === 0 ? (
@@ -210,7 +240,7 @@ const ProductList = () => {
         </div>
         <div className="cart-total">
           <h4>Total: PHP {cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}</h4>
-          <button className="ConfirmOrderButton" onClick={handleOpenModal}>Confirm Order</button>
+          <button className="ConfirmOrderButton" onClick={handleOpenModal}         disabled={cartItems.length === 0}>Checkout</button>
         </div>
       </div>
       <OrderConfirmationModal

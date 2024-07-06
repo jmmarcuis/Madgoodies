@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataLibrary.Models
 {
-    public class OrderModel
+    public class UpdateOrderStatusRequest
     {
         public int OrderID { get; set; }
-        public DateTime OrderDate { get; set; }
-        public decimal TotalAmount { get; set; }
-        public string orderStatus { get; set; }
+        public string NewStatus { get; set; }
     }
-
 }

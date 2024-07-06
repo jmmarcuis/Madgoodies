@@ -1,10 +1,10 @@
 ﻿CREATE PROCEDURE spInsertOrder
     @TotalAmount DECIMAL(10,2),
-    @IsFulfilled BIT
+    @OrderStatus NVARCHAR(50)
 AS
 BEGIN
-    INSERT INTO Orders (TotalAmount, IsFulfilled)
-    VALUES (@TotalAmount, @IsFulfilled);
+    INSERT INTO Orders (TotalAmount, OrderStatus)
+    VALUES (@TotalAmount, @OrderStatus);
 
     SELECT SCOPE_IDENTITY() AS OrderID;
 END
