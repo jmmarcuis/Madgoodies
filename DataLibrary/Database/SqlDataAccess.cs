@@ -54,5 +54,6 @@ namespace DataLibrary.Database
                 connection.Execute(sqlStatement, parameters, commandType: commandType);
             }
         }
+
     }
 }

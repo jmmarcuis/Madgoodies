@@ -108,5 +108,47 @@ namespace BlogAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+<<<<<<< Updated upstream
+=======
+
+
+        [HttpGet]
+        [Route("getusers")]
+        public ActionResult<IEnumerable<UserModel>> GetUsers()
+        {
+            try
+            {
+                var users = _db.GetUsers();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        [Route("addusers")]
+        public ActionResult<int> Register([FromBody] AddUserModel registerModel)
+        {
+            try
+            {
+                // Check 
+                if (_db.UserExists(registerModel.UserName, registerModel.FirstName, registerModel.LastName))
+                {
+                    return BadRequest("User already exists");
+                }
+
+                // Register
+                int newUserId = _db.Register(registerModel.UserName, registerModel.FirstName, registerModel.LastName, registerModel.Password);
+
+                return CreatedAtAction(nameof(Register), new { id = newUserId }, newUserId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+>>>>>>> Stashed changes
     }
 }

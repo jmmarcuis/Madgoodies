@@ -22,6 +22,7 @@ namespace DataLibrary.Data
 
             return result;
         }
+<<<<<<< Updated upstream
 
         public AdminModel AuthenticateSuperAdmin(string username, string password)
         {
@@ -29,16 +30,37 @@ namespace DataLibrary.Data
                 new { username, password }, connectionStringName, true).FirstOrDefault();
 
             return admin;
+=======
+        public IEnumerable<UserModel> GetUsers()
+        {
+            return _db.LoadData<UserModel, dynamic>("dbo.spGetUsers", new { }, connectionStringName, true);
+>>>>>>> Stashed changes
         }
 
-        public void Register(string username, string firstName, string lastName, string password)
+        public int Register(string username, string firstName, string lastName, string password)
         {
             _db.SaveData<dynamic>(
                 "dbo.spUsers_Register",
                 new { username, firstName, lastName, password },
                 connectionStringName,
                 true);
+<<<<<<< Updated upstream
         }
+=======
+
+            // Retrieve the newly created user's ID
+            string sql = "SELECT SCOPE_IDENTITY()";
+            return _db.LoadData<int, dynamic>(sql, new { }, connectionStringName, true).FirstOrDefault();
+        }
+        public AdminModel AuthenticateSuperAdmin(string username, string password)
+        {
+            AdminModel admin = _db.LoadData<AdminModel, dynamic>("dbo.spSuperAdmin_Authenticate",
+                new { username, password }, connectionStringName, true).FirstOrDefault();
+
+            return admin;
+        }
+
+>>>>>>> Stashed changes
 
         public bool UserExists(string username, string firstName, string lastName)
         {
@@ -102,6 +124,7 @@ namespace DataLibrary.Data
               true);
         }
 
+
         public ListGoods GetGoodById(int productID)
         {
             return _db.LoadData<ListGoods, dynamic>(
@@ -156,7 +179,7 @@ namespace DataLibrary.Data
                 return new
                 {
                     order.OrderID,
-                     order.OrderDate,
+                    order.OrderDate,
                     order.TotalAmount,
                     order.orderStatus,
                     OrderDetails = details
@@ -166,6 +189,7 @@ namespace DataLibrary.Data
         }
 
         public void UpdateOrderStatus(int orderId, string newStatus)
+<<<<<<< Updated upstream
 {
     _db.SaveData("dbo.spUpdateOrderStatus",
         new { OrderID = orderId, NewStatus = newStatus },
@@ -176,4 +200,28 @@ namespace DataLibrary.Data
 
  
  
+=======
+        {
+            _db.SaveData("dbo.spUpdateOrderStatus",
+                new { OrderID = orderId, NewStatus = newStatus },
+                connectionStringName,
+                true);
+        }
+
+        public void DeleteOrder(int orderId)
+        {
+            _db.SaveData("dbo.spDeleteOrder",
+                new { OrderID = orderId },
+                connectionStringName,
+                true);
+        }
+    }
+
+
+
+
+
+
+
+>>>>>>> Stashed changes
 }

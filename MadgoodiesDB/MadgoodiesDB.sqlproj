@@ -80,9 +80,16 @@
     <Build Include="dbo\Stored Procedures\spGetGoodById.sql" />
     <Build Include="dbo\Stored Procedures\spUpdateOrderStatus.sql" />
     <Build Include="dbo\Tables\SuperAdmin.sql" />
+<<<<<<< Updated upstream
     <Build Include="dbo\Stored Procedures\spAdmin_Auth.sql" />
     <Build Include="dbo\Stored Procedures\GetUsers.sql" />
     <Build Include="dbo\Stored Procedures\DeleteUser.sql" />
+=======
+    <Build Include="dbo\Stored Procedures\spGetUsers.sql" />
+    <Build Include="dbo\Stored Procedures\spSuperAdmin_Authenticate.sql" />
+    <Build Include="dbo\Stored Procedures\spAddUser.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteUser.sql" />
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <None Include="MadgoodiesDB.publish.xml" />
