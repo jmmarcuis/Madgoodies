@@ -6,72 +6,72 @@ using System;
 
 namespace BlogAPI.Controllers
 {
-   [ApiController]
-[Route("api/[controller]")]
-public class OrdersController : ControllerBase
-{
-    private readonly ISqlData _db;
-
-    public OrdersController(ISqlData db)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class OrdersController : ControllerBase
     {
-        _db = db;
-    }
+        private readonly ISqlData _db;
 
-    [HttpPost("confirm")]
-    public IActionResult ConfirmOrder([FromBody] OrderRequest request)
-    {
-        try
+        public OrdersController(ISqlData db)
         {
-            _db.CreateOrder(request.TotalAmount, request.OrderStatus, request.OrderDetails);
-            return Ok("Order confirmed successfully.");
+            _db = db;
         }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
-        }
-    }
 
-    [HttpGet]
-    public IActionResult GetOrders()
-    {
-        try
+        [HttpPost("confirm")]
+        public IActionResult ConfirmOrder([FromBody] OrderRequest request)
         {
-            var orders = _db.GetOrders();
-            return Ok(orders);
+            try
+            {
+                _db.CreateOrder(request.TotalAmount, request.OrderStatus, request.OrderDetails);
+                return Ok("Order confirmed successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
-        }
-    }
 
-    [HttpGet("{orderId}")]
-    public IActionResult GetOrderDetails(int orderId)
-    {
-        try
+        [HttpGet]
+        public IActionResult GetOrders()
         {
-            var orderDetails = _db.GetOrderDetails(orderId);
-            return Ok(orderDetails);
+            try
+            {
+                var orders = _db.GetOrders();
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
-        }
-    }
 
-    [HttpGet("withdetails")]
-    public IActionResult GetOrdersWithDetails()
-    {
-        try
+        [HttpGet("{orderId}")]
+        public IActionResult GetOrderDetails(int orderId)
         {
-            var ordersWithDetails = _db.GetOrdersWithDetails();
-            return Ok(ordersWithDetails);
+            try
+            {
+                var orderDetails = _db.GetOrderDetails(orderId);
+                return Ok(orderDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
-        catch (Exception ex)
+
+        [HttpGet("withdetails")]
+        public IActionResult GetOrdersWithDetails()
         {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
+            try
+            {
+                var ordersWithDetails = _db.GetOrdersWithDetails();
+                return Ok(ordersWithDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
-    }
         [HttpPut("status")]
         public IActionResult UpdateOrderStatus([FromBody] UpdateOrderStatusRequest request)
         {
@@ -85,6 +85,20 @@ public class OrdersController : ControllerBase
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+   [HttpDelete("{orderId}")]
+public IActionResult DeleteOrder(int orderId)
+{
+    try
+    {
+        _db.DeleteOrder(orderId);
+        return Ok($"Order with ID {orderId} deleted successfully.");
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+    }
+}
     }
 
-    }
+}

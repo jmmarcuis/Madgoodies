@@ -21,5 +21,6 @@ namespace DataLibrary.Data
         IEnumerable<OrderDetailModel> GetOrderDetails(int orderId);
         IEnumerable<dynamic> GetOrdersWithDetails();
         void UpdateOrderStatus(int orderId, string newStatus);
+            void DeleteOrder(int orderId);
     }
 }

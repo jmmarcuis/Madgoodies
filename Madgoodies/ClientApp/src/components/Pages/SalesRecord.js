@@ -30,13 +30,13 @@ const SalesRecord = () => {
   const [selectedOrderDetails, setSelectedOrderDetails] = useState(null);
   const [sortBy, setSortBy] = useState("OrderID");
   const [sortOrder, setSortOrder] = useState("asc");
-
   const [dateRange, setDateRange] = useState("all");
   const [startDate, setStartDate] = useState(null);
   const [hubConnection, setHubConnection] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState(null);
   const [stats, setStats] = useState({
     totalRevenue: 0,
     totalOrders: 0,
@@ -45,10 +45,6 @@ const SalesRecord = () => {
     cancelledOrders: 0,
     refundedOrders: 0,
   });
-
-  useEffect(() => {
-    fetchOrders();
-  }, []);
 
   useEffect(() => {
     const newHubConnection = new HubConnectionBuilder()
@@ -80,18 +76,6 @@ const SalesRecord = () => {
   useEffect(() => {
     fetchOrders();
   }, []);
-
-  useEffect(() => {
-    fetchMoreData();
-  }, []);
-
-  const fetchMoreData = async () => {
-    try {
-      const response = await axios.get("https://localhost:7162/api/good/all");
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
 
   const fetchOrders = async () => {
     setIsLoading(true);
@@ -320,9 +304,11 @@ const SalesRecord = () => {
     window.print();
   };
 
-  const handleOpenModal = async (orderId) => {
+  const handleOpenInfoModal = async (orderId) => {
     try {
-      const response = await axios.get(`https://localhost:7162/api/Orders/${orderId}`);
+      const response = await axios.get(
+        `https://localhost:7162/api/Orders/${orderId}`
+      );
       console.log("Order details received:", response.data); // Log the data
       setSelectedOrderDetails(response.data);
       setIsModalOpen(true);
@@ -334,6 +320,28 @@ const SalesRecord = () => {
   const handleCloseModal = () => {
     setSelectedOrderDetails(null);
     setIsModalOpen(false);
+  };
+
+  const handleDeleteModal = (orderId) => {
+    setOrderToDelete(orderId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteOrder = async () => {
+    if (orderToDelete) {
+      try {
+        await axios.delete(
+          `https://localhost:7162/api/Orders/${orderToDelete}`
+        );
+        toast.success("Order deleted successfully");
+        fetchOrders(); // Refresh the order list
+        setIsDeleteModalOpen(false);
+        setOrderToDelete(null);
+      } catch (error) {
+        console.error("There was an error deleting order", error);
+        toast.error("Failed to delete order");
+      }
+    }
   };
 
   return (
@@ -463,11 +471,12 @@ const SalesRecord = () => {
                 <td data-label="Actions">
                   <FontAwesomeIcon
                     className="salerecord-action-icon"
-                    onClick={() => handleOpenModal(order.orderID)}
+                    onClick={() => handleOpenInfoModal(order.orderID)}
                     icon={faInfoCircle}
                   />
                   <FontAwesomeIcon
                     className="salerecord-action-icon"
+                    onClick={() => handleDeleteModal(order.orderID)}
                     icon={faTrash}
                   />
                 </td>
@@ -481,7 +490,29 @@ const SalesRecord = () => {
       <SaleRecordOrderModal
         isOpen={isModalOpen}
         onRequestClose={handleCloseModal}
-        orderDetails={selectedOrderDetails}      />
+        orderDetails={selectedOrderDetails}
+      />
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onRequestClose={() => setIsDeleteModalOpen(false)}
+        contentLabel="Confirm Delete"
+        className="modal-content"
+        overlayClassName="modal-overlay"
+      >
+        <h2>Confirm Deletion</h2>
+        <p>Are you sure you want to delete this order?</p>
+        <div className="button-group">
+          <button className="confirm-button" onClick={handleDeleteOrder}>
+            Yes, Delete Order
+          </button>
+          <button
+            className="cancel-button"
+            onClick={() => setIsDeleteModalOpen(false)}
+          >
+            Cancel
+          </button>
+        </div>
+      </Modal>
       <ToastContainer />
     </>
   );

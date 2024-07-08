@@ -83,6 +83,22 @@
   text-align: left;
 }
 
+.InventoryTable td[data-label="Actions"] {
+ 
+  align-items: center;
+}
+
+.action-icon {
+  color: #333333;
+  margin: 0 5px; 
+  cursor: pointer;
+}
+
+.action-icon:hover{
+  cursor:pointer;
+ 
+}
+
 .InventoryTable th {
   cursor: pointer;
   position: relative;

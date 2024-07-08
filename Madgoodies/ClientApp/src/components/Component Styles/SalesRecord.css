@@ -62,7 +62,19 @@
     position: relative;
   }
   
+  .SalesRecordTable td[data-label="Actions"] {
  
+    align-items: center;
+  }
+  .salerecord-action-icon {
+    color: #333333;
+    margin: 0 5px; 
+  }
+
+  .salerecord-action-icon:hover{
+    cursor:pointer;
+   
+  }
   .pagination {
     display: flex;
     justify-content: center;

@@ -159,7 +159,17 @@ namespace DataLibrary.Data
         connectionStringName,
         true);
 }
+    
+    public void DeleteOrder(int orderId)
+{
+    _db.SaveData("dbo.spDeleteOrder",
+        new { OrderID = orderId },
+        connectionStringName,
+        true);
+}
     }
+
+    
 
  
  
