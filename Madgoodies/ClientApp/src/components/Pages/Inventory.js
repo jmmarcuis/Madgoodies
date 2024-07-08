@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit, faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrash,
+  faEdit,
+  faSortUp,
+  faSortDown,
+} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -287,7 +292,6 @@ const Inventory = () => {
     );
   };
 
-  
   const toggleDropdown = (id) => {
     setActiveDropdown(activeDropdown === id ? null : id);
   };
@@ -304,32 +308,57 @@ const Inventory = () => {
             onChange={handleSearchChange}
           />
 
-          <i
+          <button
             className="AddGoods"
             onClick={handleAddGoodsClick}
             disabled={isLoading}
           >
             Add Good
-          </i>
+          </button>
         </div>
 
         <table className="InventoryTable">
           <thead>
             <tr>
               <th onClick={() => handleSort("productID")}>
-                ID {sortBy === "productID" && (sortOrder === "asc" ? <FontAwesomeIcon icon={faSortUp} /> : <FontAwesomeIcon icon={faSortDown} />)}
+                ID{" "}
+                {sortBy === "productID" &&
+                  (sortOrder === "asc" ? (
+                    <FontAwesomeIcon icon={faSortUp} />
+                  ) : (
+                    <FontAwesomeIcon icon={faSortDown} />
+                  ))}
               </th>
               <th>Image</th>
               <th onClick={() => handleSort("productName")}>
-                Name {sortBy === "productName" && (sortOrder === "asc" ? <FontAwesomeIcon icon={faSortUp} /> : <FontAwesomeIcon icon={faSortDown} />)}
+                Name{" "}
+                {sortBy === "productName" &&
+                  (sortOrder === "asc" ? (
+                    <FontAwesomeIcon icon={faSortUp} />
+                  ) : (
+                    <FontAwesomeIcon icon={faSortDown} />
+                  ))}
               </th>
               <th onClick={() => handleSort("price")}>
-                Price {sortBy === "price" && (sortOrder === "asc" ? <FontAwesomeIcon icon={faSortUp} /> : <FontAwesomeIcon icon={faSortDown} />)}
+                Price{" "}
+                {sortBy === "price" &&
+                  (sortOrder === "asc" ? (
+                    <FontAwesomeIcon icon={faSortUp} />
+                  ) : (
+                    <FontAwesomeIcon icon={faSortDown} />
+                  ))}
               </th>
               <th onClick={() => handleSort("stock")}>
-                Stock {sortBy === "stock" && (sortOrder === "asc" ? <FontAwesomeIcon icon={faSortUp} /> : <FontAwesomeIcon icon={faSortDown} />)}
+                Stock{" "}
+                {sortBy === "stock" &&
+                  (sortOrder === "asc" ? (
+                    <FontAwesomeIcon icon={faSortUp} />
+                  ) : (
+                    <FontAwesomeIcon icon={faSortDown} />
+                  ))}
               </th>
               <th>Description</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -348,6 +377,17 @@ const Inventory = () => {
                 <td data-label="Price">{good.price.toFixed(2)}</td>
                 <td data-label="Stock">{good.stock}</td>
                 <td data-label="Description">{good.description}</td>
+                <td data-label="Status">
+                  <span
+                    className={
+                      good.stock > 0
+                        ? "status-available"
+                        : "status-not-available"
+                    }
+                  >
+                    {good.stock > 0 ? "Available" : "Not Available"}
+                  </span>
+                </td>
                 <td data-label="Actions">
                   <FontAwesomeIcon
                     icon={faEdit}

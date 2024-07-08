@@ -36,7 +36,7 @@
 
 .cart-bar {
 flex-grow: 0.1;
-width: 380420px;
+ 
 max-width: 380px;
   position: sticky;
   top: 0;
@@ -136,12 +136,20 @@ max-width: 380px;
   }
 
   .cart-bar {
-    position: static;  
+    position: sticky;
     height: auto;
     border-left: none;
+    background-color: #fff;
+
     border-bottom: 1px solid #ccc;
     padding-bottom: 20px;
   }
+  .product-catalogue-flex,
+  .cart-bar {
+    width: 100%;
+    max-width: none;
+  }
+
 }
 
 .product-filters {

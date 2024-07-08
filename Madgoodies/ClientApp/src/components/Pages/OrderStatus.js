@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { HubConnectionBuilder } from "@microsoft/signalr";
-import OrderStatusCard from "./OrderStatusCard";
+import OrderStatusCard from "../POS System Components/OrderStatusCard";
 import "../Component Styles/OrderStatus.css";
 import Modal from 'react-modal';
 

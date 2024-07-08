@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import Madgoodieslogo from "./Images/madgoodies.png";
 import axios from "axios";
-import Cart from "./POS System Components/Cart";
-import OrderStatus from "./POS System Components/OrderStatus";
-import SalesRecord from "./Pages/SalesRecord";
 import { useNavigate } from "react-router-dom";
 import "./Component Styles/PosSystem.css";
-import Inventory from "./POS System Components/Inventory";
+import Cart from "./Pages/Cart";
+import OrderStatus from "./Pages/OrderStatus";
+import Inventory from "./Pages/Inventory";
+import SalesRecord from "./Pages/SalesRecord";
 import Admin from "./Pages/Admin"
 
 const PosSystem = () => {
@@ -50,7 +50,7 @@ const PosSystem = () => {
         return <Inventory />;
       case "salesrecord":
         return <SalesRecord/>;
-      case "settings":
+      case "admin":
         return <Admin/>;
       default:
         return null;
@@ -79,7 +79,7 @@ const PosSystem = () => {
         {isSidebarVisible && (
           <>
             <div className="logo-container">
-              <img src={Madgoodieslogo} alt="Logo" className="login-logo" />
+              <img src={Madgoodieslogo} alt="Logo" className="possystem-login-logo" />
             </div>
             <ul className="menu">
               <li
@@ -107,17 +107,12 @@ const PosSystem = () => {
                 <i className="fas fa-chart-line"></i> <span>Sales Record</span>
               </li>
               <li
-                className={`menu-item ${activeComponent === "users" ? "active" : ""}`}
-                onClick={() => switchComponent("users")}
+                className={`menu-item ${activeComponent === "admin" ? "active" : ""}`}
+                onClick={() => switchComponent("admin")}
               >
                 <i className="fas fa-user"></i> <span>Users</span>
               </li>
-              <li
-                className={`menu-item ${activeComponent === "settings" ? "active" : ""}`}
-                onClick={() => switchComponent("settings")}
-              >
-                <i className="fas fa-cog"></i> <span>Settings</span>
-              </li>
+           
             </ul>
             <div className="logout">
               <ul className="menu">

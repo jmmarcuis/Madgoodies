@@ -16,7 +16,7 @@
 
 .goods-card.disabled {
   cursor: not-allowed;
-  opacity: 0.5; /* Adjust opacity to visually indicate disabled state */
+  opacity: 0.5;  
 }
 
 .goods-card:hover {

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import GoodsCard from "./GoodsCard";
+
 import InfiniteScroll from "react-infinite-scroll-component";
 import "../Component Styles/Cart.css";
-import CartItem from "./CartItem";
+import CartItem from "../POS System Components/CartItem";
+import GoodsCard from "../POS System Components/GoodsCard";
+import OrderConfirmationModal from "../POS System Components/OrderConfirmationModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faSortAmountDown, faSortAmountUp } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import OrderConfirmationModal from "./OrderConfirmationModal";
+
 import { HubConnectionBuilder } from "@microsoft/signalr";
 
 const ProductList = () => {
@@ -213,8 +215,8 @@ const ProductList = () => {
               stock={product.stock}
               imageUrl={product.productImageUrl}
               onAddToCart={() => addToCart(product)}
-              isDisabled={cartItems.some(item => item.productID === product.productID)}  
-            />
+              isDisabled={product.stock === 0 || cartItems.some(item => item.productID === product.productID)}
+              />
           ))}
         </InfiniteScroll>
       </div>

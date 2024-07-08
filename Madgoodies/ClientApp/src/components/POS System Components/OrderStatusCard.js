@@ -6,13 +6,13 @@ const OrderStatusCard = ({ order, onSelect, isSelected }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'Pending':
-        return '#9E9E9E'; // Orange
+        return '#FFF3CD'; // Orange
       case 'Completed':
-        return '#4CAF50'; // Green
+        return '#D1E7DD'; // Green
       case 'Cancelled':
-        return '#F44336'; // Red
+        return '#D1ECF1'; // Red
       case 'Refunded':
-        return '#2196F3'; // Blue
+        return '#F8D7DA'; // Blue
       default:
         return '#9E9E9E'; // Grey
     }
@@ -26,7 +26,7 @@ const OrderStatusCard = ({ order, onSelect, isSelected }) => {
       </div>
       <div className="order-status-card-right">
         <p className="price">PHP {order.totalAmount.toFixed(2)}</p>
-        <span className="order-status" style={{ backgroundColor: getStatusColor(order.orderStatus) }}>
+        <span className="order-status-card-span" style={{ backgroundColor: getStatusColor(order.orderStatus) }}>
           {order.orderStatus}
         </span>
       </div>
