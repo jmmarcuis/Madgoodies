@@ -4,34 +4,28 @@ import Madgoodieslogo from "./Images/madgoodies.png";
 import axios from "axios";
 import Cart from "./POS System Components/Cart";
 import OrderStatus from "./POS System Components/OrderStatus";
+import SalesRecord from "./Pages/SalesRecord";
 import { useNavigate } from "react-router-dom";
 import "./Component Styles/PosSystem.css";
+import Inventory from "./POS System Components/Inventory";
+import Admin from "./Pages/Admin"
 
 const PosSystem = () => {
   const navigate = useNavigate();
   const [activeComponent, setActiveComponent] = useState("inventory");
   const [goods, setGoods] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
 
   useEffect(() => {
     const isAuthenticated = checkAuthentication();
     if (!isAuthenticated) {
       toast.error("Unauthorized Access not Allowed");
-      navigate("/poslogin"); // Redirect to login page
+      navigate("/poslogin");
     }
   }, [navigate]);
-
-  useEffect(() => {
-    axios
-      .get("/api/goods")
-      .then((response) => {
-        setGoods(response.data.goods);
-      })
-      .catch((error) => {
-        console.error("Error fetching goods:", error);
-      });
-  }, []);
 
   const checkAuthentication = () => {
     const jwtToken = localStorage.getItem("jwtToken");
@@ -51,20 +45,24 @@ const PosSystem = () => {
       case "cart":
         return <Cart />;
       case "sales":
-        return <OrderStatus/>;
+        return <OrderStatus />;
+      case "inventory":
+        return <Inventory />;
+      case "salesrecord":
+        return <SalesRecord/>;
       case "settings":
-        return <div>Settings Component</div>;
+        return <Admin/>;
       default:
         return null;
     }
   };
 
-  const toggleSidebar = (event) => {
-    if (event && event.target.classList.contains("sidebar-overlay")) {
-      setIsSidebarOpen(false);
-    } else {
-      setIsSidebarOpen(!isSidebarOpen);
-    }
+  const toggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
+  };
+
+  const toggleSidebarCollapse = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
   };
 
   const handleLogout = () => {
@@ -73,55 +71,66 @@ const PosSystem = () => {
   };
 
   return (
-    <div className={`PosDashboard ${isSidebarOpen ? "sidebar-open" : ""}`}>
-      {isSidebarOpen && (
-        <div className="sidebar-overlay" onClick={toggleSidebar}></div>
-      )}
-      <div className={`PosSidePanel ${isSidebarOpen ? "open" : ""}`}>
-        <button className="close-sidebar" onClick={toggleSidebar}>
-          ×
+    <div className={`PosDashboard ${isSidebarVisible ? "sidebar-visible" : "sidebar-hidden"}`}>
+      <div className={`PosSidePanel ${isSidebarVisible ? "visible" : "hidden"}`}>
+        <button className="toggle-sidebar-button" onClick={toggleSidebar}>
+          {isSidebarVisible ? "◀" : "☰"}
         </button>
-        <div className="logo-container">
-          <img src={Madgoodieslogo} alt="Logo" className="login-logo" />
-        </div>
-        <ul className="menu">
-          <li
-            className={`menu-item ${
-              activeComponent === "cart" ? "active" : ""
-            }`}
-            onClick={() => switchComponent("cart")}
-          >
-            <i className="fas fa-book"></i> Catalogue
-          </li>
-          <li
-            className={`menu-item ${
-              activeComponent === "sales" ? "active" : ""
-            }`}
-            onClick={() => switchComponent("sales")}
-          >
-            <i className="fas fa-shopping-cart"></i> Orders
-          </li>
-          <li
-            className={`menu-item ${
-              activeComponent === "settings" ? "active" : ""
-            }`}
-            onClick={() => switchComponent("settings")}
-          >
-            <i className="fas fa-cog"></i> Settings
-          </li>
-        </ul>
-        <div className="logout">
-          <ul className="menu">
-            <li className="menu-item" onClick={handleLogout}>
-              <i className="fas fa-sign-out-alt"></i> Logout
-            </li>
-          </ul>
-        </div>
+        {isSidebarVisible && (
+          <>
+            <div className="logo-container">
+              <img src={Madgoodieslogo} alt="Logo" className="login-logo" />
+            </div>
+            <ul className="menu">
+              <li
+                className={`menu-item ${activeComponent === "cart" ? "active" : ""}`}
+                onClick={() => switchComponent("cart")}
+              >
+                <i className="fas fa-book"></i> <span>Catalogue</span>
+              </li>
+              <li
+                className={`menu-item ${activeComponent === "sales" ? "active" : ""}`}
+                onClick={() => switchComponent("sales")}
+              >
+                <i className="fas fa-shopping-cart"></i> <span>Orders</span>
+              </li>
+              <li
+                className={`menu-item ${activeComponent === "inventory" ? "active" : ""}`}
+                onClick={() => switchComponent("inventory")}
+              >
+                <i className="fas fa-box"></i> <span>Inventory</span>
+              </li>
+              <li
+                className={`menu-item ${activeComponent === "salesrecord" ? "active" : ""}`}
+                onClick={() => switchComponent("salesrecord")}
+              >
+                <i className="fas fa-chart-line"></i> <span>Sales Record</span>
+              </li>
+              <li
+                className={`menu-item ${activeComponent === "users" ? "active" : ""}`}
+                onClick={() => switchComponent("users")}
+              >
+                <i className="fas fa-user"></i> <span>Users</span>
+              </li>
+              <li
+                className={`menu-item ${activeComponent === "settings" ? "active" : ""}`}
+                onClick={() => switchComponent("settings")}
+              >
+                <i className="fas fa-cog"></i> <span>Settings</span>
+              </li>
+            </ul>
+            <div className="logout">
+              <ul className="menu">
+                <li className="menu-item" onClick={handleLogout}>
+                  <i className="fas fa-sign-out-alt"></i> <span>Logout</span>
+                </li>
+              </ul>
+            </div>
+          </>
+        )}
       </div>
+
       <div className="PosContent">
-        <button className="toggle-sidebar" onClick={toggleSidebar}>
-          ☰
-        </button>
         {renderActiveComponent()}
       </div>
     </div>

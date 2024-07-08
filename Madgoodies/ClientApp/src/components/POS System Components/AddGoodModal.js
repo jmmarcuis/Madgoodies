@@ -20,14 +20,22 @@ const AddGoodModal = ({
   isLoading,
 }) => {
   const onDrop = useCallback((acceptedFiles) => {
-    handleImageChange({
-      target: {
-        files: acceptedFiles
-      }
-    });
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      const file = acceptedFiles[0];
+      handleImageChange({
+        target: {
+          name: "productImage",
+          files: [file]
+        }
+      });
+    }
   }, [handleImageChange]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
+    onDrop,
+    accept: 'image/*',
+    multiple: false
+  });
 
   return (
     <Modal
@@ -46,7 +54,6 @@ const AddGoodModal = ({
           </span>
         </div>
         <form onSubmit={handleSubmit}>
-          {/* Form fields */}
           <label>
             Product Name:
             <input
@@ -89,7 +96,7 @@ const AddGoodModal = ({
             ></textarea>
           </label>
           <div {...getRootProps()} className="dropzone">
-            <input {...getInputProps()} name="productImage" required />
+            <input {...getInputProps()} name="productImage" />
             {
               isDragActive ?
                 <p>Drop the image here ...</p> :

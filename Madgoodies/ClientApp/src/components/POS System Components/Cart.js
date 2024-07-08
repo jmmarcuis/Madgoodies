@@ -120,9 +120,12 @@ const ProductList = () => {
   };
 
   const addToCart = (product) => {
-    const isInCart = cartItems.some(item => item.productID === product.productID);
-    if (!isInCart) {
+    const existingItem = cartItems.find(item => item.productID === product.productID);
+    if (!existingItem) {
       setCartItems([...cartItems, { ...product, quantity: 1 }]);
+    } else {
+      // Inform user the item is already in the cart (optional)
+      toast.info(`${product.productName} is already in your cart.`);
     }
   };
 
@@ -201,7 +204,7 @@ const ProductList = () => {
           hasMore={hasMore}
           className="product-grid"
         >
-          {filteredAndSortedItems.map((product) => (
+      {filteredAndSortedItems.map((product) => (
             <GoodsCard
               key={product.productID}
               id={product.productID}
@@ -209,8 +212,8 @@ const ProductList = () => {
               price={product.price}
               stock={product.stock}
               imageUrl={product.productImageUrl}
-              onAddToCart={() => checkStockAndAddToCart(product)}
-              isDisabled={product.stock === 0} // Disable card if stock is 0
+              onAddToCart={() => addToCart(product)}
+              isDisabled={cartItems.some(item => item.productID === product.productID)}  
             />
           ))}
         </InfiniteScroll>

@@ -1,5 +1,5 @@
 import Home from "./components/Home";
-import Dashboard from "./components/Dashboard";
+ 
 import PosSystem from "./components/PosSystem";
 import PosLogin from "./components/PosLogin";
 
@@ -11,7 +11,7 @@ const AppRoutes = [
   },
   {
     path: "/dashboard",
-    element: <Dashboard />
+    element: <PosSystem />
   },
   {
     path: "/possystem",

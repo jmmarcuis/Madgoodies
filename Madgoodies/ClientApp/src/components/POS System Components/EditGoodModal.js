@@ -1,6 +1,8 @@
-import React, { useCallback } from "react";
+// EditGoodModal.jsx
+
+import React from "react";
 import Modal from "react-modal";
-import { useDropzone } from "react-dropzone";
+import { useDropzone } from 'react-dropzone';
 import "../Component Styles/ModifyGoodModal.css";
 import "../Component Styles/Modal.css";
 
@@ -9,31 +11,29 @@ const EditGoodModal = ({
   onRequestClose,
   handleUpdate,
   handleChange,
-  handleImageChange,
   isSubmitting,
   productName,
   price,
   stock,
   description,
   fileName,
+  previewUrl,
   isLoading,
 }) => {
-  const onDrop = useCallback(
-    (acceptedFiles) => {
-      handleImageChange({
-        target: {
-          files: acceptedFiles,
-        },
-      });
-    },
-    [handleImageChange]
-  );
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    handleUpdate(e);
+  const onDrop = (acceptedFiles) => {
+    handleChange({
+      target: {
+        name: "productImage",
+        files: acceptedFiles,
+      },
+    });
   };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
+    onDrop,
+    accept: 'image/*',
+    multiple: false
+  });
 
   return (
     <Modal
@@ -51,7 +51,7 @@ const EditGoodModal = ({
             &times;
           </span>
         </div>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleUpdate}>
           <label>
             Product Name:
             <input
@@ -102,12 +102,15 @@ const EditGoodModal = ({
             )}
             {fileName && <p>Selected file: {fileName}</p>}
           </div>
-          <button
-            type="submit"
-            className="submit-button"
-            disabled={isSubmitting || isLoading}
-          >
-            Update Good
+          
+          {previewUrl && (
+            <div className="image-preview">
+              <img src={previewUrl} alt="Preview" style={{ maxWidth: '100%', maxHeight: '200px' }} />
+            </div>
+          )}
+
+          <button type="submit" className="submit-button" disabled={isSubmitting || isLoading}>
+            {isSubmitting ? "Updating..." : "Update"}
           </button>
         </form>
       </div>

@@ -87,6 +87,7 @@ const OrderStatus = () => {
     }
 };
   const filteredOrders = orders.filter((order) => order.orderStatus === filter);
+  
 
 return (
     <div className="orderstatus-flex">

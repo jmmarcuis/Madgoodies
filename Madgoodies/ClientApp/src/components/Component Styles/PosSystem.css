@@ -1,11 +1,15 @@
- 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
 body {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
 }
 
-.container{
+.container {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -19,66 +23,69 @@ body {
   overflow-x: hidden;
 }
 
-
-.PosSidePanel.open {
-  left: 0;
+.PosSidePanel {
+  width: 200px;
+  background-color: #E7DDCD;
+  color: #1A1A1A;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  position: relative;
+  height: 100vh;
 }
 
-
-.PosSidePanel.closed {
-  left: -220px;
+.PosSidePanel.hidden {
+  width: 0px;
+  margin: 0;
+  padding: 0;
+  margin-right: 40px;
 }
-
 
 .logo-container {
   margin-bottom: 20px;
 }
-.sidebar-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 150; 
-  display: none;
-}
 
-.sidebar-open .sidebar-overlay {
-  display: block;
+.login-logo {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
 }
 
 .PosSidePanel ul {
   list-style-type: none;
   padding: 0;
-  width: 100%; /* Full width for the list */
+  width: 100%;
 }
+
+.PosSidePanel ul li:hover {
+  background-color: #1A1A1A;
+  border-radius: 16px;
+  color: #E7DDCD;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
+
+.PosSidePanel ul li.active {
+  background-color: #1A1A1A;
+  border-radius: 16px;
+  color: #E7DDCD;
+  box-shadow: none;
+  transform: translateY(0);
+}
+
 .PosSidePanel ul li {
+  border-radius: 16px;
   padding: 10px 0;
   text-align: left;
   cursor: pointer;
-  width: 100%; 
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;  
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
 }
-
-.PosSidePanel {
-  width: 220px;
-  background-color: #E7DDCD;
-  color: #1A1A1A;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
-  position: fixed;
-  left: -220px;
-  top: 0;
-  transition: all 0.3s ease;
-  z-index: 160;
-}
-
 
 .menu-item i {
   font-size: 14px;
@@ -88,68 +95,57 @@ body {
 
 .menu-item {
   margin-bottom: 10px;
-  width: 100%; /* Full width for the menu item */
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.PosSidePanel.hidden .menu-item span {
+  display: none;
 }
 
 .logout {
-  margin-top: auto; /* Push the logout button to the bottom */
+  margin-top: auto;
 }
 
 .PosContent {
   flex: 1;
   padding: 20px;
-   transition: all 0.3s ease;
-}
-
-.sidebar-closed .PosContent {
+  transition: all 0.3s ease;
   margin-left: 0;
-}
-.toggle-sidebar {
-  position: fixed;
-  left: 10px;
-  top: 10px;
-  background-color: transparent;
-  border: none;
-  color: #1A1A1A;
-  padding: 10px;
-  cursor: pointer;
-  z-index: 200;
+  overflow-y: auto;
 }
 
-.close-sidebar {
+.sidebar-visible .PosContent {
+  margin-left: 20px;
+}
+
+.toggle-sidebar-button {
   position: absolute;
-  right: 10px;
-  top: 10px;
-  background: none;
+  top: 30px;
+  right: -30px;
+  background-color: #E7DDCD;
+  color: #1A1A1A;
   border: none;
-  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 0 5px 5px 0;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 101;
 }
 
-.sidebar-closed .toggle-sidebar {
+.PosSidePanel.hidden .toggle-sidebar-button {
   left: 0;
 }
- 
 
-@media (min-width: 769px) {
+@media (max-width: 768px) {
   .PosSidePanel {
+    position: fixed;
+    z-index: 1000;
     left: 0;
   }
-  .sidebar-overlay {
-    display: none !important;
-  }
-
-  .PosContent {
-    margin-left: 220px;
-  }
-
-  .toggle-sidebar {
-    display: none;
-  }
-
-  .close-sidebar {
-    display: none;
-  }
 }
- 
- 

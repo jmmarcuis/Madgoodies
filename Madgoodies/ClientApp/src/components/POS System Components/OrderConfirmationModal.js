@@ -4,6 +4,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "../Component Styles/OrderConfirmationModal.css";
 import MadGoodiesQR from "../Images/MadgoodiesQR.jpg";
+import ReceiptPrint from  "./ReceiptPrint";
+
 Modal.setAppElement("#root");
 
 const OrderConfirmationModal = ({
@@ -60,11 +62,28 @@ const OrderConfirmationModal = ({
     setConfirmTransactionModalOpen(false);
   };
 
-  const printReceipt = () => {
-    // Implement the logic to print the receipt here
-    toast.info("Printing receipt...");
-    confirmOrder();
+  const handlePrint = () => {
+    const printContent = document.getElementById('receipt-to-print');
+    const windowUrl = 'about:blank';
+    const uniqueName = new Date().getTime();
+    const windowName = 'Print' + uniqueName;
+    const printWindow = window.open(windowUrl, windowName, 'left=50000,top=50000,width=0,height=0');
+
+    printWindow.document.write('<html><head><title>Print Receipt</title>');
+    printWindow.document.write('<link rel="stylesheet" href="ReceiptPrint.css" type="text/css" />');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write(printContent.innerHTML);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.focus();
+
+    setTimeout(() => {
+      printWindow.print();
+      printWindow.close();
+    }, 500);
   };
+
+
 
   return (
     <>
@@ -78,6 +97,9 @@ const OrderConfirmationModal = ({
         <h2>Check Out</h2>
         <div className="order-summary">
           <h3>Order Summary:</h3>
+          <div id="receipt-to-print" style={{ display: 'none' }}>
+          <ReceiptPrint orderDetails={  cartItems} />
+        </div>
           <ul>
             {cartItems.map((item) => (
               <li key={item.productID}>
@@ -160,8 +182,8 @@ const OrderConfirmationModal = ({
           <button className="confirm-button" onClick={confirmOrder}>
             Yes, Confirm
           </button>
-          <button className="confirm-and-print-button" onClick={printReceipt}>
-            Yes, Confirm and Print Receipt
+          <button className="confirm-and-print-button" onClick={handlePrint}>
+            Print Reciept
           </button>
           <button
             className="cancel-button"

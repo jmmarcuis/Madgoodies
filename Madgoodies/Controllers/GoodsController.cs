@@ -30,7 +30,7 @@ namespace BlogAPI.Controllers
 
         [HttpPost]
         [Route("add")]
-        public async Task<IActionResult> AddGood([FromForm] CreateGood good, [FromForm] IFormFile productImage)
+        public async Task<IActionResult> AddGood([FromForm] CreateGood good, [FromForm] IFormFile? productImage)
         {
             try
             {
@@ -60,7 +60,6 @@ namespace BlogAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-
 
 
 
@@ -126,10 +125,9 @@ namespace BlogAPI.Controllers
             var uri = new Uri(url);
             var segments = uri.Segments;
             var filename = segments[segments.Length - 1];
-            var publicId = filename.Substring(0, filename.LastIndexOf('.'));
+            var publicId = Path.GetFileNameWithoutExtension(filename);
             return publicId;
         }
-
 
         [HttpPut]
         [Route("{id}")]
@@ -171,37 +169,61 @@ namespace BlogAPI.Controllers
         }
 
 
-        [HttpPut]
-        [Route("{id}/image")]
+        [HttpPut("{id}/image")]
         public async Task<IActionResult> UpdateGoodImage(int id, IFormFile productImage)
         {
             try
             {
-                if (productImage == null)
+                // Get the existing good
+                var existingGood = _db.GetGoodById(id);
+                if (existingGood == null)
+                {
+                    return NotFound("Good not found");
+                }
+
+                // Delete the old image from Cloudinary if it exists
+                if (!string.IsNullOrEmpty(existingGood.ProductImageUrl))
+                {
+                    var publicId = GetPublicIdFromUrl(existingGood.ProductImageUrl);
+                    if (!string.IsNullOrEmpty(publicId))
+                    {
+                        var deletionParams = new DeletionParams(publicId);
+                        var deletionResult = await _cloudinary.DestroyAsync(deletionParams);
+
+                        if (deletionResult.Result != "ok")
+                        {
+                            // Log the error, but continue with the update
+                        }
+                    }
+                }
+
+                // Upload the new image
+                if (productImage != null)
+                {
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(productImage.FileName, productImage.OpenReadStream()),
+                        Transformation = new Transformation().Crop("fill").Gravity("face")
+                    };
+
+                    var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                    string imageUrl = uploadResult.SecureUrl.ToString();
+
+                    // Update the good with the new image URL
+                    _db.UpdateGoodImage(id, imageUrl);
+
+                    return Ok(new { message = "Good image updated successfully", imageUrl = imageUrl });
+                }
+                else
                 {
                     return BadRequest("No image file provided.");
                 }
-
-                var uploadParams = new ImageUploadParams()
-                {
-                    File = new FileDescription(productImage.FileName, productImage.OpenReadStream()),
-                    Transformation = new Transformation().Crop("fill").Gravity("face")
-                };
-
-                var uploadResult = await _cloudinary.UploadAsync(uploadParams);
-                string imageUrl = uploadResult.SecureUrl.ToString();
-
-                Console.WriteLine($"Updating Good Image: ID={id}, ImageUrl={imageUrl}");
-
-                _db.UpdateGoodImage(id, imageUrl);
-                return Ok(new { message = "Good image updated successfully", imageUrl = imageUrl });
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { error = $"Internal server error: {ex.Message}" });
             }
         }
-
 
     }
 }

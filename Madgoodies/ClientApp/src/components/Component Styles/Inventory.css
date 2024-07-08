@@ -1,13 +1,17 @@
+.InventoryContainer{
+  margin-left: 5px;
+}
 .InventoryFlexContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 20px;
+ 
 }
 
 .InventorySearch {
   flex-grow: 1;
+  width: 100%;
   max-width: 300px;
   padding: 10px;
   margin-right: 20px;
@@ -26,7 +30,7 @@
   cursor: pointer;
   display: inline-block;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: normal;
   margin: 0;
   min-height: 60px;
@@ -42,6 +46,7 @@
   width: 100%;
   max-width: 350px;
   will-change: transform;
+  font-style: normal;
 }
 
 .AddGoods:disabled {
@@ -64,12 +69,11 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  overflow-x: auto;
 }
 
 .InventoryTable thead {
-  background-color: #4C300A;
-  color: white;
+  background-color: transparent;
+  color: rgb(84, 84, 84);
 }
 
 .InventoryTable th,
@@ -80,9 +84,15 @@
 }
 
 .InventoryTable th {
-  font-weight: bold;
+  cursor: pointer;
+  position: relative;
 }
 
+.InventoryTable th .faSortUp,
+.InventoryTable th .faSortDown {
+  position: absolute;
+  right: 15px;
+}
 .table-image {
   max-width: 50px;
   max-height: 50px;
@@ -92,52 +102,18 @@
   margin: 0 auto;
 }
 
-@media (max-width: 768px) {
-  .InventoryTable th,
-  .InventoryTable td {
-    padding: 5px;
-  }
-  .AddGoods {
-    padding: 10px 15px;
-    font-size: 14px;
-  }
-  .InventorySearch {
-    padding: 8px;
-    font-size: 14px;
-  }
-
-  
-
- 
-}
-
-@media (max-width: 480px) {
-  .InventoryFlexContainer {
-    flex-direction: column;
-    align-items: stretch;
-    margin-top: 40px;
-
-  }
-  .InventorySearch {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-  .AddGoods {
-    width: 100%;
-  }
-}
-
 .pagination {
   display: flex;
   justify-content: center;
   margin: 20px 0;
+  flex-wrap: wrap;
 }
 
 .pagination button {
   background-color: #fff;
   border: 1px solid #dee2e6;
   padding: 10px 20px;
-  margin: 0 5px;
+  margin: 5px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
 }
@@ -152,3 +128,162 @@
   background-color: #f1f1f1;
 }
 
+.meatball-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.meatball-icon {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 120px;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+
+
+@media (max-width: 768px) {
+  .InventoryFlexContainer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .InventorySearch {
+    max-width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  
+  .AddGoods {
+    max-width: 100%;
+  }
+
+  .InventoryTable {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    border: none;
+  }
+
+  .InventoryTable thead {
+    display: none;
+  }
+
+  .InventoryTable tbody, .InventoryTable tr {
+    display: contents;
+  }
+
+  .InventoryTable td {
+    display: block;
+    padding: 10px;
+    text-align: left;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .InventoryTable td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.8em;
+    color: #666;
+  }
+
+  .InventoryTable td:first-child {
+    background-color: #4C300A;
+    color: white;
+    font-weight: bold;
+  }
+
+  .table-image {
+    max-width: 100%;
+    max-height: 150px;
+    width: auto;
+    height: auto;
+    margin: 10px auto;
+  }
+
+  .InventoryTable td:last-child {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+  }
+
+  .action-icon {
+    font-size: 1.2em;
+  }
+  .InventoryTable td:last-child {
+    display: block;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .meatball-menu {
+    display: inline-block;
+  }
+
+  .dropdown-menu {
+    position: static;
+    display: block;
+    border: none;
+    box-shadow: none;
+    margin-top: 10px;
+  }
+
+  .dropdown-item {
+    padding: 8px;
+    background-color: #f9f9f9;
+    margin-bottom: 5px;
+    border-radius: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pagination button {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+  .dropdown-item {
+    font-size: 14px;
+  }
+}
