@@ -22,6 +22,10 @@ namespace DataLibrary.Data
 
             return result;
         }
+           public IEnumerable<UserModel> GetUsers()
+    {
+        return _db.LoadData<UserModel, dynamic>("dbo.spGetUsers", new { }, connectionStringName, true);
+    }
 
         public void Register(string username, string firstName, string lastName, string password)
         {
@@ -31,6 +35,14 @@ namespace DataLibrary.Data
                 connectionStringName,
                 true);
         }
+         public AdminModel AuthenticateSuperAdmin(string username, string password)
+    {
+        AdminModel admin = _db.LoadData<AdminModel, dynamic>("dbo.spSuperAdmin_Authenticate",
+            new { username, password }, connectionStringName, true).FirstOrDefault();
+
+        return admin;
+    }
+
 
         public bool UserExists(string username, string firstName, string lastName)
         {
