@@ -79,6 +79,10 @@
     <Build Include="dbo\Stored Procedures\spUpdateProductStock.sql" />
     <Build Include="dbo\Stored Procedures\spGetGoodById.sql" />
     <Build Include="dbo\Stored Procedures\spUpdateOrderStatus.sql" />
+    <Build Include="dbo\Tables\SuperAdmin.sql" />
+    <Build Include="dbo\Stored Procedures\spAdmin_Auth.sql" />
+    <Build Include="dbo\Stored Procedures\GetUsers.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MadgoodiesDB.publish.xml" />

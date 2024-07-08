@@ -23,6 +23,14 @@ namespace DataLibrary.Data
             return result;
         }
 
+        public AdminModel AuthenticateSuperAdmin(string username, string password)
+        {
+            AdminModel admin = _db.LoadData<AdminModel, dynamic>("dbo.spAdmin_Auth",
+                new { username, password }, connectionStringName, true).FirstOrDefault();
+
+            return admin;
+        }
+
         public void Register(string username, string firstName, string lastName, string password)
         {
             _db.SaveData<dynamic>(
@@ -132,6 +140,11 @@ namespace DataLibrary.Data
         {
             return _db.LoadData<OrderDetailModel, dynamic>("dbo.spGetOrderDetails",
                 new { OrderID = orderId }, connectionStringName, true);
+        }
+
+        public IEnumerable<UserModel> GetUsers()
+        {
+            return _db.LoadData<UserModel, dynamic>("dbo.spGetUsers", new { }, connectionStringName, true);
         }
 
         public IEnumerable<dynamic> GetOrdersWithDetails()

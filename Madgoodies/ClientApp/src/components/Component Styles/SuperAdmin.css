@@ -1,0 +1,105 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f5f5;
+}
+
+
+.LoginMainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.welcome-message {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333333;
+}
+
+.login-logo {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.login-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-family: 'Poppins', sans-serif;
+    }
+
+.login-button {
+    padding: 10px 15px;
+    background-color: #4C300A;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+}
+
+    .login-button:hover {
+        background-color: #4C300A;
+    }
+
+.SuperAdminContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.UsersTable {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 800px;
+}
+
+    .UsersTable h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .UsersTable table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .UsersTable th,
+    .UsersTable td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .UsersTable th {
+        background-color: #f2f2f2;
+    }
