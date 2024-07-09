@@ -83,6 +83,10 @@
     <Build Include="dbo\Tables\SuperAdmin.sql" />
     <Build Include="dbo\Stored Procedures\spGetUsers.sql" />
     <Build Include="dbo\Stored Procedures\spSuperAdmin_Authenticate.sql" />
+    <Build Include="dbo\Stored Procedures\spAddUser.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateUser.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteUser.sql" />
+    <Build Include="dbo\Stored Procedures\spGetUserById.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MadgoodiesDB.publish.xml" />

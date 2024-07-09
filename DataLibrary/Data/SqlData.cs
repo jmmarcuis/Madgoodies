@@ -179,10 +179,43 @@ namespace DataLibrary.Data
         connectionStringName,
         true);
 }
+
+        public void AddUser(UserModel user)
+        {
+            _db.SaveData("dbo.spAddUser",
+                new { user.UserName, user.FirstName, user.LastName, user.Password },
+                connectionStringName,
+                true);
+        }
+
+        public void UpdateUser(UserModel user)
+        {
+            _db.SaveData("dbo.spUpdateUser",
+                new { user.Id, user.UserName, user.FirstName, user.LastName, user.Password },
+                connectionStringName,
+                true);
+        }
+
+        public void DeleteUser(int userId)
+        {
+            _db.SaveData("dbo.spDeleteUser",
+                new { UserId = userId },
+                connectionStringName,
+                true);
+        }
+
+        public UserModel GetUserById(int userId)
+        {
+            return _db.LoadData<UserModel, dynamic>("dbo.spGetUserById",
+                new { UserId = userId },
+                connectionStringName,
+                true).FirstOrDefault();
+        }
+
     }
 
-    
+ 
 
- 
- 
+
+
 }

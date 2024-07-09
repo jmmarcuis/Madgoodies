@@ -124,5 +124,66 @@ namespace BlogAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+        [HttpPost("adduser")]
+         public ActionResult AddUser([FromBody] UserModel user)
+        {
+            try
+            {
+                _db.AddUser(user);
+                return Ok("User added successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpPut("updateuser/{id}")]
+        public ActionResult UpdateUser(int id, [FromBody] UserModel user)
+        {
+            try
+            {
+                user.Id = id; // Ensure the user ID is set correctly
+                _db.UpdateUser(user);
+                return Ok("User updated successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+        [HttpDelete("deleteuser/{id}")]
+         public ActionResult DeleteUser(int id)
+        {
+            try
+            {
+                _db.DeleteUser(id);
+                return Ok("User deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("user/{id}")]
+         public ActionResult<UserModel> GetUser(int id)
+        {
+            try
+            {
+                var user = _db.GetUserById(id);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }
