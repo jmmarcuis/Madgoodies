@@ -124,27 +124,29 @@ const SuperAdmin = () => {
       throw error;
     }
   };
-  const openModal = (type, user = null) => {
-    setModalType(type);
-    setSelectedUser(user);
-    setModalIsOpen(true);
-    if (type === "add") {
-      setNewUser({
-        userName: "",
-        firstName: "",
-        lastName: "",
-        password: "",
-      });
-    } else if (type === "edit" && user) {
-      setNewUser({
-        userName: user.userName,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        password: "",
-      });
-    }
-    setModalIsOpen(true);
-  };
+    const openModal = (type, user = null) => {
+        setModalType(type);
+        setSelectedUser(user);
+        setModalIsOpen(true);
+
+        if (type === "add") {
+            setNewUser({
+                userName: "",
+                firstName: "",
+                lastName: "",
+                password: "",
+            });
+        } else if (type === "edit" && user) {
+            setNewUser({
+                userName: user.userName,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                password: "",
+            });
+        }
+
+        setModalIsOpen(true);
+    };
 
   const closeModal = () => {
     setModalIsOpen(false);
@@ -219,7 +221,7 @@ const SuperAdmin = () => {
 
     try {
         const response = await fetch(
-            `https://localhost:7162/api/login/deleteuser/${selectedUser.id}`,
+            `https://localhost:7162/api/login/deleteuser/${selectedUser.Id}`,
             {
                 method: "DELETE",
                 headers: {
@@ -242,38 +244,38 @@ const SuperAdmin = () => {
 };
 
 
-  const handleDeleteUser = async () => {
-    if (!selectedUser || !selectedUser.id) {
-      console.error("No user selected for deletion");
-      toast.error("Error: No user selected for deletion");
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `https://localhost:7162/api/login/deleteuser/${selectedUser.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-          },
+    const handleDeleteUser = async () => {
+        if (!selectedUser || !selectedUser.id) {
+            console.error("No user selected for deletion");
+            toast.error("Error: No user selected for deletion");
+            return;
         }
-      );
 
-      if (!response.ok) {
-        throw new Error("Failed to delete user");
-      }
+        try {
+            const response = await fetch(
+                `https://localhost:7162/api/login/deleteuser/${selectedUser.id}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+                    },
+                }
+            );
 
-      toast.success("User deleted successfully");
-      closeModal();
-      // Fetch updated user list
-      const updatedUsers = await fetchUsers();
-      setUsers(updatedUsers);
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      toast.error("Failed to delete user");
-    }
-  };
+            if (!response.ok) {
+                throw new Error("Failed to delete user");
+            }
+
+            toast.success("User deleted successfully");
+            closeModal();
+            // Fetch updated user list
+            const updatedUsers = await fetchUsers();
+            setUsers(updatedUsers);
+        } catch (error) {
+            console.error("Error deleting user:", error);
+            toast.error("Failed to delete user");
+        }
+    };
 
   if (isLoggedIn) {
     return (
@@ -291,34 +293,36 @@ const SuperAdmin = () => {
         <div className="UsersTable">
           <table>
             <thead>
-              <tr>
-                <th>Username</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.userName}</td>
-                  <td>{user.firstName}</td>
-                  <td>{user.lastName}</td>
-                  <td>
-                    <FontAwesomeIcon
-                      icon={faEdit}
-                      className="action-icon"
-                      onClick={() => openModal("edit", user.id)}
-                    />
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      className="action-icon"
-                      onClick={() => openModal('delete', user.id)}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map((user) => (
+                            <tr key={user.id}>
+                                <td>{user.id}</td>
+                                <td>{user.userName}</td>
+                                <td>{user.firstName}</td>
+                                <td>{user.lastName}</td>
+                                <td>
+                                    <FontAwesomeIcon
+                                        icon={faEdit}
+                                        className="action-icon"
+                                        onClick={() => openModal("edit", user)}
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={faTrash}
+                                        className="action-icon"
+                                        onClick={() => openModal("delete", user)}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
           </table>
         </div>
         <Modal

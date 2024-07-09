@@ -2,6 +2,7 @@
 AS
 BEGIN
     SELECT 
+        Id
         UserName,
         FirstName,
         LastName,
