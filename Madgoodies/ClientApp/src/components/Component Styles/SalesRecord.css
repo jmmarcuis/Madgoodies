@@ -81,23 +81,7 @@
     margin: 20px 0;
     flex-wrap: wrap;
   }
-  
-  .pagination button {
-    background-color: #be9762;
-    color: #1A1A1A;
-    border-color: #be9762;
-    border-radius: 9px;
-    padding: 10px 20px;
-    margin: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
- 
-  .pagination button:hover:not(.active) {
-    background-color: #f1f1f1;
-  }
-  
+
   .order-status {
     display: inline-block;
     width: 100px;

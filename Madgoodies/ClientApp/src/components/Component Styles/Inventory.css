@@ -57,16 +57,24 @@
   color: rgb(84, 84, 84);
 }
 
+.InventoryTable td{
+  height: 70px; /* Adjust this value as needed */
+  vertical-align: middle
+}
+
 .InventoryTable th,
 .InventoryTable td {
   padding: 10px;
   border-bottom: 1px solid #dee2e6;
   text-align: left;
+  
 }
 
 .InventoryTable td[data-label="Actions"] {
   align-items: center;
 }
+
+ 
 
 .action-icon {
   color: #333333;
@@ -92,10 +100,7 @@
 .table-image {
   max-width: 50px;
   max-height: 50px;
-  width: auto;
-  height: auto;
-  display: block;
-  margin: 0 auto;
+  
 }
 
 .pagination {
@@ -104,24 +109,36 @@
   margin: 20px 0;
   flex-wrap: wrap;
 }
-
+  
 .pagination button {
-  background-color: #fff;
-  border: 1px solid #dee2e6;
+  background-color:transparent;
+  color: #1A1A1A;
+  border-color: #1A1A1A;
+  border-radius: 9px;
   padding: 10px 20px;
   margin: 5px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
 }
 
+
+.pagination button:hover:not(.active) {
+  color: #f1f1f1;
+}
+
+
+ 
+
 .pagination button.active {
-  background-color: #4C300A;
-  color: white;
-  border-color: #4C300A;
+  background-color: transparent;
+  color: #f1f1f1;
+  border-color: #202020;
+  background-color: #1A1A1A;
+
 }
 
 .pagination button:hover:not(.active) {
-  background-color: #f1f1f1;
+  background-color: #1A1A1A;
 }
 
 .meatball-menu {

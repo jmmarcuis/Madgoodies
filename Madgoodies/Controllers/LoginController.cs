@@ -139,19 +139,19 @@ namespace BlogAPI.Controllers
         }
 
         [HttpPut("updateuser/{id}")]
-        public ActionResult UpdateUser(int id, [FromBody] UserModel user)
-        {
-            try
-            {
-                user.Id = id; // Ensure the user ID is set correctly
-                _db.UpdateUser(user);
-                return Ok("User updated successfully");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
+public ActionResult UpdateUser(int id, [FromBody] UserModel user)
+{
+    try
+    {
+        user.Id = id; // Ensure the user ID is set correctly
+        _db.UpdateUser(user);
+        return Ok("User updated successfully");
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+    }
+}
 
 
         [HttpDelete("deleteuser/{id}")]

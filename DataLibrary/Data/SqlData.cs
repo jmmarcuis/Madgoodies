@@ -1,5 +1,6 @@
 ﻿using DataLibrary.Database;
 using DataLibrary.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -191,7 +192,14 @@ namespace DataLibrary.Data
         public void UpdateUser(UserModel user)
         {
             _db.SaveData("dbo.spUpdateUser",
-                new { user.Id, user.UserName, user.FirstName, user.LastName, user.Password },
+                new
+                {
+                    userId = user.Id,
+                    username = user.UserName,
+                    firstName = user.FirstName,
+                    lastName = user.LastName,
+                    password = user.Password
+                },
                 connectionStringName,
                 true);
         }

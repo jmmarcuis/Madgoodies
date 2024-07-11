@@ -292,9 +292,6 @@ const Inventory = () => {
     );
   };
 
-  const toggleDropdown = (id) => {
-    setActiveDropdown(activeDropdown === id ? null : id);
-  };
 
   return (
     <>
@@ -357,8 +354,7 @@ const Inventory = () => {
                     <FontAwesomeIcon icon={faSortDown} />
                   ))}
               </th>
-              <th>Description</th>
-              <th>Status</th>
+               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -376,8 +372,7 @@ const Inventory = () => {
                 <td data-label="Name">{good.productName}</td>
                 <td data-label="Price">{good.price.toFixed(2)}</td>
                 <td data-label="Stock">{good.stock}</td>
-                <td data-label="Description">{good.description}</td>
-                <td data-label="Status">
+                 <td data-label="Status">
                   <span
                     className={
                       good.stock > 0
