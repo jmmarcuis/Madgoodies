@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ isMobile }) => {
   return isMobile ? (
     <MobileHeader navItems={navItems} />
   ) : (
-    <DesktopHeader navItems={navItems} />
+    <DesktopHeader  />
   );
 };
 

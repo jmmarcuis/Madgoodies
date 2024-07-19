@@ -1,4 +1,3 @@
-import React from 'react';
 import '../Eshop Component Styles/Homepage.css';
 
 const HomePage = () => {

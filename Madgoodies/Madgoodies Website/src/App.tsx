@@ -1,5 +1,4 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Layout from './Madgoodies Eshop/Eshop Components/Eshop Headers/Eshop Layout';
 import HomePage from './Madgoodies Eshop/Eshop Pages/Homepage';
 import OrderOnlinePage from './Madgoodies Eshop/Eshop Pages/OrderOnlinePage';
