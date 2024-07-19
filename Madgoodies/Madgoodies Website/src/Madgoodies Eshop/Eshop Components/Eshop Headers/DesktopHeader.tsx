@@ -14,7 +14,16 @@ const socialMediaLinks = {
   github: "https://github.com/jmmarcuis",
 };
 
-const DesktopHeader: React.FC = () => {
+interface NavItem {
+  to: string;
+  label: string;
+}
+interface DesktopHeaderProps {
+  navItems: NavItem[];
+}
+
+const DesktopHeader: React.FC<DesktopHeaderProps> = ({ navItems }) => {
+ 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
