@@ -86,19 +86,19 @@ namespace BlogAPI.Controllers
             }
         }
 
-   [HttpDelete("{orderId}")]
-public IActionResult DeleteOrder(int orderId)
-{
-    try
-    {
-        _db.DeleteOrder(orderId);
-        return Ok($"Order with ID {orderId} deleted successfully.");
-    }
-    catch (Exception ex)
-    {
-        return StatusCode(500, $"Internal server error: {ex.Message}");
-    }
-}
+        [HttpDelete("{orderId}")]
+        public IActionResult DeleteOrder(int orderId)
+        {
+            try
+            {
+                _db.DeleteOrder(orderId);
+                return Ok($"Order with ID {orderId} deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 
 }

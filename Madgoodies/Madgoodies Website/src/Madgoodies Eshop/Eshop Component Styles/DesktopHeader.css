@@ -1,0 +1,122 @@
+/* DesktopHeader.css */
+
+.desktop-header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 180px;
+  background-color: #ffffff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+}
+
+.desktop-site-location {
+  border-top: 3px solid #000;
+  border-bottom: 3px solid #000;
+  padding-top: 0.9375rem;
+  padding-bottom: 0.9375rem;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.desktop-site-location a {
+  background-color: transparent;
+  text-decoration: none;
+  color: #010101;
+}
+
+.desktop-header-img {
+  width: 180px;
+  align-self: center;
+  margin-bottom: -30px;
+}
+
+.desktop-button  {
+  background-color: #fbeee0;
+  border: 2px solid #422800;
+  border-radius: 30px;
+  box-shadow: #422800 4px 4px 0 0;
+  color: #422800;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 20px;
+  line-height: 22px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.desktop-button:hover {
+  background-color: #fff;
+}
+
+.desktop-button:active {
+  box-shadow: #422800 2px 2px 0 0;
+  transform: translate(2px, 2px);
+}
+
+@media (min-width: 768px) {
+  .dekstop-button {
+    min-width: 120px;
+    padding: 0 25px;
+  }
+}
+
+
+.desktop-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.desktop-nav a {
+  padding: 12px;
+  text-decoration: none;
+  color: #242323;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.desktop-nav a:hover {
+  color: #e91e63;
+}
+
+.desktop-header-socials {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 10px;
+}
+
+.desktop-header-socials svg {
+  width: 14px;
+  height: 14px;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: fill 0.3s ease;
+}
+
+.desktop-header-socials svg:hover {
+  border-color: #e91e63;
+}
+
+.desktop-header-powered-by {
+  font-size: 12px;
+  color: #2a2a2a;
+  text-align: center;
+  margin-bottom: 20px;
+}
