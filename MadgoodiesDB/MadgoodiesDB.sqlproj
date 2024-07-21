@@ -87,8 +87,13 @@
     <Build Include="dbo\Stored Procedures\spUpdateUser.sql" />
     <Build Include="dbo\Stored Procedures\spDeleteUser.sql" />
     <Build Include="dbo\Stored Procedures\spGetUserById.sql" />
+    <Build Include="dbo\Tables\ProductPackaging.sql" />
+    <Build Include="dbo\Stored Procedures\spAddProductPackaging.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProductPackaging.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteProductPackaging.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MadgoodiesDB.publish.xml" />
+    <None Include="MadgoodiesDB_1.publish.xml" />
   </ItemGroup>
 </Project>

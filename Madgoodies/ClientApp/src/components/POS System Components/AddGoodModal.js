@@ -1,4 +1,3 @@
-// AddGoodModal.jsx
 import React, { useCallback } from "react";
 import Modal from "react-modal";
 import { useDropzone } from 'react-dropzone';

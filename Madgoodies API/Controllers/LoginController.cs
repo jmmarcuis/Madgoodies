@@ -16,9 +16,9 @@ namespace BlogAPI.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IConfiguration _config;
-        private readonly ISqlData _db;
+        private readonly IUserData _db;
 
-        public LoginController(IConfiguration config, ISqlData db)
+        public LoginController(IConfiguration config, IUserData db)
         {
             _config = config;
             _db = db;

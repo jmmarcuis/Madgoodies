@@ -10,9 +10,9 @@ namespace BlogAPI.Controllers
     [Route("api/[controller]")]
     public class OrdersController : ControllerBase
     {
-        private readonly ISqlData _db;
+        private readonly IOrderData _db;
 
-        public OrdersController(ISqlData db)
+        public OrdersController(IOrderData db)
         {
             _db = db;
         }

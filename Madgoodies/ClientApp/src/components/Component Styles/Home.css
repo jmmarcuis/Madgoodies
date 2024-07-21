@@ -5,16 +5,16 @@ body {
     margin: 0;
     padding: 0;
     font-family: "Poppins", sans-serif;
-  }
-  
-  .container {
+}
+
+.container {
     margin: 0;
     padding: 0;
     height: 100%;
-  }
+}
 
-  
-  .LoginMainContainer {
+
+.LoginMainContainer {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -23,11 +23,12 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-     max-width: 400px;  
-    width: 90%;  
+    max-width: 400px;
+    width: 90%;
     padding: 20px;
     box-sizing: border-box;
 }
+
 .welcome-message {
     font-family: 'Lora', serif;
     font-size: 1.5rem;
@@ -40,6 +41,7 @@ body {
     min-width: 320px;
 
 }
+
 .login-form {
     display: flex;
     flex-direction: column;
@@ -50,20 +52,20 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-top: -30px;
 }
- 
+
 .form-group {
     margin-bottom: 15px;
     width: 100%;
 }
 
- 
+
 .form-group label {
     display: block;
     margin-bottom: 5px;
     font-weight: 600;
 }
 
- 
+
 .form-group input {
     width: 100%;
     padding: 8px;
@@ -72,7 +74,7 @@ body {
     font-family: "Poppins", sans-serif;
 }
 
- 
+
 .login-button {
     padding: 10px 15px;
     background-color: #4C300A;

@@ -27,7 +27,7 @@ const DesktopHeader: React.FC = () => {
         </Link>
           <button className="desktop-button">ORDER ONLINE</button>
         <nav className={`desktop-nav ${isMenuOpen ? "open" : ""}`}>
-          <NavLink to="/hoursandlocation" onClick={toggleMenu}>
+          <NavLink to="/location" onClick={toggleMenu}>
             HOURS AND LOCATION{" "}
           </NavLink>
           <NavLink to="/about" onClick={toggleMenu}>

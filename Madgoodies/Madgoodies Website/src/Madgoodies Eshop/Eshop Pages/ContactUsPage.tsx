@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import "../Eshop Component Styles/ContactUsPage.css";
-
+import { motion } from "framer-motion";
 const ContactUsPage: React.FC = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -36,6 +36,23 @@ const ContactUsPage: React.FC = () => {
     }
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        when: "beforeChildren",
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (captchaValue) {
@@ -47,82 +64,96 @@ const ContactUsPage: React.FC = () => {
   };
 
   return (
-    <div className="Contact-flex-container">
-      <div className="Contact-faq-container">
+    <motion.div
+      className="Contact-flex-container"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.div className="Contact-faq-container" variants={itemVariants}>
         <div className="Contact-faq-wrapper">
-          <h1>Frequently Asked Questions</h1>
+          <motion.h1 variants={itemVariants}>
+            Frequently Asked Questions
+          </motion.h1>
 
           <h2>Nationwide Shipping</h2>
 
-          <div className="faq-item">
+          <motion.div className="faq-item" variants={itemVariants}>
             <input type="checkbox" id="faq-1" />
             <label htmlFor="faq-1">Shipping and Returns</label>
             <div className="faq-content">{/* Add content here */}</div>
-          </div>
+          </motion.div>
 
-          <div className="faq-item">
+          <motion.div className="faq-item" variants={itemVariants}>
             <input type="checkbox" id="faq-2" />
             <label htmlFor="faq-2">COVID-19 Shipping and Delay Updates</label>
             <div className="faq-content">{/* Add content here */}</div>
-          </div>
+          </motion.div>
 
           <h2>Orders</h2>
 
-          <div className="faq-item">
+          <motion.div className="faq-item" variants={itemVariants}>
             <input type="checkbox" id="faq-3" />
             <label htmlFor="faq-3">
               Scheduling Delivery Date & Delivery Window
             </label>
             <div className="faq-content">{/* Add content here */}</div>
-          </div>
+          </motion.div>
 
-          <div className="faq-item">
+          <motion.div className="faq-item" variants={itemVariants}>
             <input type="checkbox" id="faq-4" />
             <label htmlFor="faq-4">Bakery Pickup Orders</label>
             <div className="faq-content">{/* Add content here */}</div>
-          </div>
+          </motion.div>
 
-          <div className="faq-item">
+          <motion.div className="faq-item" variants={itemVariants}>
             <input type="checkbox" id="faq-5" />
             <label htmlFor="faq-5">Order Delays</label>
             <div className="faq-content">{/* Add content here */}</div>
-          </div>
+          </motion.div>
 
           <h2>About Our Products</h2>
 
-          <div className="faq-item">
+          <motion.div className="faq-item" variants={itemVariants}>
             <input type="checkbox" id="faq-6" />
             <label htmlFor="faq-6">What is the texture of your cookies? </label>
             <div className="faq-content">{/* Add content here */}</div>
-          </div>
+          </motion.div>
 
-          <div className="faq-item">
+          <motion.div className="faq-item" variants={itemVariants}>
             <input type="checkbox" id="faq-7" />
             <label htmlFor="faq-7">What if i dont like chewy cookies?</label>
             <div className="faq-content">{/* Add content here */}</div>
-          </div>
+          </motion.div>
 
-          <div className="faq-item">
+          <motion.div className="faq-item"variants={itemVariants}>
             <input type="checkbox" id="faq-8" />
             <label htmlFor="faq-8">Are your goodies freshly baked?</label>
             <div className="faq-content">{/* Add content here */}</div>
-          </div>
-          <div className="faq-item">
+          </motion.div>
+          <motion.div className="faq-item"variants={itemVariants}>
             <input type="checkbox" id="faq-9" />
             <label htmlFor="faq-9">How long can I store my goodies</label>
             <div className="faq-content">{/* Add content here */}</div>
-          </div>
-          <div className="faq-item">
+          </motion.div>
+          <motion.div className="faq-item"variants={itemVariants}>
             <input type="checkbox" id="faq-10" />
             <label htmlFor="faq-10">What are the sizes of your cookies?</label>
             <div className="faq-content">{/* Add content here */}</div>
-          </div>
+          </motion.div>
         </div>
-      </div>
-      <div className="Contact-form-container">
+      </motion.div>
+
+      <motion.div className="Contact-form-container" variants={itemVariants}>
         <div className="Contact-form-wrapper">
-          <h1>Didn't find the answers you were looking for?</h1>
-          <form onSubmit={handleSubmit} className="contact-form">
+          <motion.h1 variants={itemVariants}>
+            Didn't find the answers you were looking for?
+          </motion.h1>
+          <motion.form
+            onSubmit={handleSubmit}
+            className="contact-form"
+            variants={itemVariants}
+          >
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="firstName">FIRST NAME *</label>
@@ -220,13 +251,18 @@ const ContactUsPage: React.FC = () => {
               sitekey="YOUR_RECAPTCHA_SITE_KEY"
               onChange={(value) => setCaptchaValue(value)}
             />
-            <button className="submit-contact-button" type="submit">
+            <motion.button
+              className="submit-contact-button"
+              type="submit"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               Send Message
-            </button>
-          </form>
+            </motion.button>
+          </motion.form>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

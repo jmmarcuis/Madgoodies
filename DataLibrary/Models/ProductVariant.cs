@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace DataLibrary.Models
 {
-    public class CreateGood
+    public class ProductVariantModel
     {
-        public int ProductID { get; set; }
-
-         public string ProductName { get; set; }
+        public int VariantID { get; set; }
+        public string VariantName { get; set; }
         public decimal Price { get; set; }
         public int Stock { get; set; }
-        public string Description { get; set; }
-        public List<ProductVariantModel> Variants { get; set; }
-
     }
+
+
 }

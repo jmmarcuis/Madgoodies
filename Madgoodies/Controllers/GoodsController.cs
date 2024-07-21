@@ -16,11 +16,11 @@ namespace BlogAPI.Controllers
     [Route("api/[controller]")]
     public class GoodController : ControllerBase
     {
-        private readonly ISqlData _db;
+        private readonly IProductData _db;
         private readonly Cloudinary _cloudinary;
         private readonly IHubContext<FetchGoodHub> _hubContext;
 
-        public GoodController(ISqlData db, Cloudinary cloudinary, IHubContext<FetchGoodHub> hubContext)
+        public GoodController(IProductData db, Cloudinary cloudinary, IHubContext<FetchGoodHub> hubContext)
         {
             _db = db;
             _cloudinary = cloudinary;
@@ -225,5 +225,60 @@ namespace BlogAPI.Controllers
             }
         }
 
+        [HttpPost("{id}/packaging")]
+        public IActionResult AddProductPackaging(int id, [FromBody] PackagingRequest request)
+        {
+            try
+            {
+                if (request == null || request.PackageQuantity <= 0)
+                {
+                    return BadRequest("Invalid package quantity");
+                }
+
+                _db.AddProductPackaging(id, request.PackageQuantity);
+                return Ok("Packaging added successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("{id}/packaging")]
+        public IActionResult GetProductPackaging(int id)
+        {
+            try
+            {
+                var packagings = _db.GetProductPackaging(id);
+                return Ok(packagings);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id}/packaging/{packageId}")]
+        public IActionResult DeleteProductPackaging(int id, int packageId)
+        {
+            try
+            {
+                _db.DeleteProductPackaging(id, packageId);
+                return Ok("Packaging deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+        public class PackagingRequest
+        {
+            public int PackageQuantity { get; set; }
+        }
+
+
     }
 }
+

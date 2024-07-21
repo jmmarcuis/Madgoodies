@@ -23,7 +23,9 @@ namespace BlogAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddTransient<ISqlData, SqlData>();
+            builder.Services.AddTransient<IOrderData, OrderData>();
+            builder.Services.AddTransient<IUserData, UserData>();
+            builder.Services.AddTransient<IProductData, ProductData>();
             builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 

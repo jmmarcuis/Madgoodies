@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spDeleteGood]
+﻿CREATE PROCEDURE dbo.spDeleteGood
     @ProductID INT
 AS
 BEGIN

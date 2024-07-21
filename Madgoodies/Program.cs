@@ -22,8 +22,10 @@ builder.Services.AddSingleton(cloudinary);
 
 // Add services to the container
 builder.Services.AddControllers();
-builder.Services.AddTransient<ISqlData, SqlData>();
-builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
+builder.Services.AddTransient<IOrderData, OrderData>();
+builder.Services.AddTransient<IUserData, UserData>();
+builder.Services.AddTransient<IProductData, ProductData>();
+ builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddSignalR();
 
