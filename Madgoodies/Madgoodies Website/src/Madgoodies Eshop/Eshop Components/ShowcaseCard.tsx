@@ -5,23 +5,21 @@ import '../Eshop Component Styles/Showcase.css';
 interface ShowcaseCardProps {
   image: string;
   title: string;
-  description: string;
+  price: number;
 }
 
-const ShowcaseCard: React.FC<ShowcaseCardProps> = ({ image, title, description }) => {
+const ShowcaseCard: React.FC<ShowcaseCardProps> = ({ image, title, price }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <AnimatePresence>
     <motion.div
       className="showcase-card"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       whileHover={{ scale: 1.05 }}
-    
     >
       <div className="showcase-card-img-container">
-        <img src={image} alt={description} className="showcase-image" />
+        <img src={image} alt={title} className="showcase-image" />
         <AnimatePresence>
           {isHovered && (
             <motion.div
@@ -45,9 +43,8 @@ const ShowcaseCard: React.FC<ShowcaseCardProps> = ({ image, title, description }
         </AnimatePresence>
       </div>
       <h3 className="showcase-title">{title}</h3>
-      <p className="showcase-description">{description}</p>
+      <p className="showcase-price">₱{price}</p>
     </motion.div>
-    </AnimatePresence>
   );
 };
 

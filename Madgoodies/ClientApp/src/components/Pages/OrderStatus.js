@@ -7,12 +7,12 @@ import "../Component Styles/OrderStatus.css";
 import Modal from 'react-modal';
 
 const OrderStatus = () => {
-    const [hubConnection, setHubConnection] = useState(null);
-    const [orders, setOrders] = useState([]);
-    const [selectedOrder, setSelectedOrder] = useState(null);
-    const [filter, setFilter] = useState("Pending");
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [pendingStatus, setPendingStatus] = useState(null);
+  const [hubConnection, setHubConnection] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [filter, setFilter] = useState("Pending");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [pendingStatus, setPendingStatus] = useState(null);
 
   useEffect(() => {
     const newHubConnection = new HubConnectionBuilder()
@@ -39,9 +39,11 @@ const OrderStatus = () => {
       newHubConnection.stop();
     };
   }, []);
+
   useEffect(() => {
     fetchOrdersWithDetails();
   }, []);
+
   const fetchOrdersWithDetails = async () => {
     try {
       const response = await axios.get(
@@ -57,6 +59,7 @@ const OrderStatus = () => {
       toast.error("Failed to fetch orders");
     }
   };
+
   const openModal = (status) => {
     setPendingStatus(status);
     setModalIsOpen(true);
@@ -66,6 +69,7 @@ const OrderStatus = () => {
     setModalIsOpen(false);
     setPendingStatus(null);
   };
+
   const handleOrderSelect = (order) => {
     setSelectedOrder(order);
   };
@@ -85,11 +89,11 @@ const OrderStatus = () => {
         console.error("Error updating order status:", error);
         toast.error("Failed to update order status");
     }
-};
-  const filteredOrders = orders.filter((order) => order.orderStatus === filter);
-  
+  };
 
-return (
+  const filteredOrders = orders.filter((order) => order.orderStatus === filter);
+
+  return (
     <div className="orderstatus-flex">
       <div className="orderstatus-catalogue-flex">
         <div className="orderstatus-filters">
@@ -109,6 +113,7 @@ return (
             order={order}
             onSelect={() => handleOrderSelect(order)}
             isSelected={selectedOrder && selectedOrder.orderID === order.orderID}
+            isOnlineOrder={!!order.firstName}
           />
         ))}
       </div>

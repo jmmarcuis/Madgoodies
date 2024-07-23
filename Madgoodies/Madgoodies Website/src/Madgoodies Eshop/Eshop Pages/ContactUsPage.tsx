@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import "../Eshop Component Styles/ContactUsPage.css";
 import { motion } from "framer-motion";
+import axios from "axios";
+import { Helmet } from "react-helmet";
+import logo from"../../assets/madgoodies.png"
+
 const ContactUsPage: React.FC = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -10,14 +14,10 @@ const ContactUsPage: React.FC = () => {
     phone: "",
     orderNumber: "",
     helpType: "",
-    productConcern: "",
-    deliveryIssue: "",
-    productIssue: "",
     message: "",
   });
-  const [captchaValue, setCaptchaValue] = useState<string | null>(null);
-  const [file, setFile] = useState<File | null>(null);
 
+ 
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -30,12 +30,34 @@ const ContactUsPage: React.FC = () => {
     }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFile(e.target.files[0]);
-    }
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
+    try {
+        const data = new FormData();
+        data.append("FirstName", formData.firstName);
+        data.append("LastName", formData.lastName);
+        data.append("EmailAddress", formData.email);
+        data.append("PhoneNumber", formData.phone);
+        data.append("OrderNumber", formData.orderNumber);
+        data.append("InquiryType", formData.helpType);
+        data.append("Message", formData.message);
+
+        const response = await axios.post(
+            "https://localhost:7162/api/CustomerInquiry",
+            data
+        );
+
+        console.log("Inquiry submitted successfully", response.data);
+        // Reset form or show success message
+    } catch (error) {
+        console.error("Error submitting inquiry:", error);
+        // Show error message
+    }
+};
+
+
+ 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -53,17 +75,12 @@ const ContactUsPage: React.FC = () => {
     visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (captchaValue) {
-      // Handle form submission here
-      console.log("Form submitted", { ...formData, file });
-    } else {
-      alert("Please complete the reCAPTCHA");
-    }
-  };
-
   return (
+    <>
+    <Helmet>
+    <title>Madgoodies - Contact & FAQ</title>
+    <link rel="icon" href={logo} type="image/x-icon" />
+  </Helmet>
     <motion.div
       className="Contact-flex-container"
       variants={containerVariants}
@@ -126,17 +143,17 @@ const ContactUsPage: React.FC = () => {
             <div className="faq-content">{/* Add content here */}</div>
           </motion.div>
 
-          <motion.div className="faq-item"variants={itemVariants}>
+          <motion.div className="faq-item" variants={itemVariants}>
             <input type="checkbox" id="faq-8" />
             <label htmlFor="faq-8">Are your goodies freshly baked?</label>
             <div className="faq-content">{/* Add content here */}</div>
           </motion.div>
-          <motion.div className="faq-item"variants={itemVariants}>
+          <motion.div className="faq-item" variants={itemVariants}>
             <input type="checkbox" id="faq-9" />
             <label htmlFor="faq-9">How long can I store my goodies</label>
             <div className="faq-content">{/* Add content here */}</div>
           </motion.div>
-          <motion.div className="faq-item"variants={itemVariants}>
+          <motion.div className="faq-item" variants={itemVariants}>
             <input type="checkbox" id="faq-10" />
             <label htmlFor="faq-10">What are the sizes of your cookies?</label>
             <div className="faq-content">{/* Add content here */}</div>
@@ -178,7 +195,6 @@ const ContactUsPage: React.FC = () => {
                 />
               </div>
             </div>
-
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="email">EMAIL ADDRESS *</label>
@@ -202,7 +218,6 @@ const ContactUsPage: React.FC = () => {
                 />
               </div>
             </div>
-
             <div className="form-group">
               <label htmlFor="orderNumber">ORDER NUMBER (IF APPLICABLE)</label>
               <input
@@ -213,7 +228,6 @@ const ContactUsPage: React.FC = () => {
                 onChange={handleChange}
               />
             </div>
-
             <div className="form-group">
               <label htmlFor="helpType">HOW CAN WE HELP YOU? *</label>
               <select
@@ -224,45 +238,44 @@ const ContactUsPage: React.FC = () => {
                 required
               >
                 <option value="">Select an option</option>
-                {/* Add options here */}
-              </select>
-            </div>
-
+                <option value="product">Product Problems</option>
+                <option value="shipping">Shipping Problems</option>
+               </select>
+            </div>{" "}
             <div className="form-group">
-              <label htmlFor="message">MESSAGE</label>
+              <label htmlFor="message">MESSAGE *</label>
               <textarea
                 id="message"
                 name="message"
-                rows={4}
                 value={formData.message}
                 onChange={handleChange}
+                required
               ></textarea>
             </div>
-
             <div className="form-group">
-              <label>
-                PLEASE UPLOAD PICTURES OF THE ISSUE (AND THE RECEIPT IF
-                POSSIBLE).
-              </label>
-              <input type="file" id="fileUpload" onChange={handleFileChange} />
+              <label htmlFor="file">Upload an image (optional)</label>
+              <input type="file" id="file"   />
             </div>
-
-            <ReCAPTCHA
-              sitekey="YOUR_RECAPTCHA_SITE_KEY"
-              onChange={(value) => setCaptchaValue(value)}
-            />
-            <motion.button
-              className="submit-contact-button"
-              type="submit"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Send Message
-            </motion.button>
+            <div className="form-group">
+              <ReCAPTCHA
+                sitekey="your-site-key"
+               />
+            </div>
+            <div className="form-group">
+              <motion.button
+                type="submit"
+                className="submit-contact-button"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                Submit
+              </motion.button>
+            </div>
           </motion.form>
         </div>
       </motion.div>
     </motion.div>
+    </>
   );
 };
 

@@ -1,0 +1,50 @@
+/* OrderForm.css */
+
+.order-form-container { 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+   border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+.order-form-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.order-form-container label {
+  display: block;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.order-form-container input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.order-form-container input[type="radio"] {
+  margin-right: 10px;
+}
+
+.order-form-container button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.order-form-container button:hover {
+  background-color: #333;
+}

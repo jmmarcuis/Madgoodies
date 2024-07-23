@@ -10,7 +10,7 @@
   }
   
   .Homepage-product-showcase h2 {
-    font-size: 2rem;
+    font-size: 3.4rem;
     margin-bottom: 10px;
   }
   
@@ -104,8 +104,7 @@
   background: #000;
   color: #fff;
   font-weight: bold;
-  margin-bottom: 80px;
-}
+ }
 
 .marquee-content {
   display: flex;

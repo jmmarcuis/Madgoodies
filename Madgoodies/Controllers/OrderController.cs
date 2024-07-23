@@ -31,13 +31,13 @@ namespace BlogAPI.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult GetOrders()
+        [HttpGet("withdetails")]
+        public IActionResult GetOrdersWithDetails()
         {
             try
             {
-                var orders = _db.GetOrders();
-                return Ok(orders);
+                var ordersWithDetails = _db.GetOrdersWithDetails();
+                return Ok(ordersWithDetails);
             }
             catch (Exception ex)
             {
@@ -59,19 +59,6 @@ namespace BlogAPI.Controllers
             }
         }
 
-        [HttpGet("withdetails")]
-        public IActionResult GetOrdersWithDetails()
-        {
-            try
-            {
-                var ordersWithDetails = _db.GetOrdersWithDetails();
-                return Ok(ordersWithDetails);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
         [HttpPut("status")]
         public IActionResult UpdateOrderStatus([FromBody] UpdateOrderStatusRequest request)
         {
@@ -100,5 +87,4 @@ namespace BlogAPI.Controllers
             }
         }
     }
-
 }

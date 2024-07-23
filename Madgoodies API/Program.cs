@@ -27,6 +27,7 @@ namespace BlogAPI
             builder.Services.AddTransient<IUserData, UserData>();
             builder.Services.AddTransient<IProductData, ProductData>();
             builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
+            builder.Services.AddTransient<ICartService, CartService>();
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

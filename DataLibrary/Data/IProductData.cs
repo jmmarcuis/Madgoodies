@@ -11,6 +11,7 @@ namespace DataLibrary.Data
         void UpdateGoodDetails(int productID, string productName, decimal price, int stock, string description);
         void UpdateGoodImage(int productID, string productImageUrl);
         ListGoods GetGoodById(int productID);
+
         IEnumerable<ProductPackaging> GetProductPackaging(int productId);
         void AddProductPackaging(int productId, int packageQuantity);
         void DeleteProductPackaging(int productId, int packageId);

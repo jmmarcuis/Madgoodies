@@ -59,6 +59,9 @@
     <Folder Include="dbo" />
     <Folder Include="dbo\Tables" />
     <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="dbo\Customer Stored Procedures" />
+    <Folder Include="dbo\Online Order Stored Procedures" />
+    <Folder Include="dbo\Customer Inquiries Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Users.sql" />
@@ -91,6 +94,24 @@
     <Build Include="dbo\Stored Procedures\spAddProductPackaging.sql" />
     <Build Include="dbo\Stored Procedures\spGetProductPackaging.sql" />
     <Build Include="dbo\Stored Procedures\spDeleteProductPackaging.sql" />
+    <Build Include="dbo\Stored Procedures\sp_GetOrCreateCart.sql" />
+    <Build Include="dbo\Tables\CustomerUsers.sql" />
+    <Build Include="dbo\Customer Stored Procedures\spRegisterCustomer.sql" />
+    <Build Include="dbo\Customer Stored Procedures\spAuthenticateCustomer.sql" />
+    <Build Include="dbo\Tables\OnlineOrders.sql" />
+    <Build Include="dbo\Tables\OrderItems.sql" />
+    <Build Include="dbo\Online Order Stored Procedures\spCreateOrder.sql" />
+    <Build Include="dbo\Online Order Stored Procedures\spCreateOrderItem.sql" />
+    <Build Include="dbo\Online Order Stored Procedures\spUpdateOnlineOrderStatus.sql" />
+    <Build Include="dbo\Online Order Stored Procedures\spGetAllOrders.sql" />
+    <Build Include="dbo\Online Order Stored Procedures\spGetOrder.sql" />
+    <Build Include="dbo\Online Order Stored Procedures\spGetOrderItems.sql" />
+    <Build Include="dbo\Online Order Stored Procedures\spGetFilteredOrders.sql" />
+    <Build Include="dbo\Online Order Stored Procedures\spDeleteOnlineOrder.sql" />
+    <Build Include="dbo\Tables\CustomerInquiries.sql" />
+    <Build Include="dbo\Customer Inquiries Stored Procedures\spCustomerInquiries_GetById.sql" />
+    <Build Include="dbo\Customer Inquiries Stored Procedures\spCustomerInquiries_GetAll.sql" />
+    <Build Include="dbo\Customer Inquiries Stored Procedures\spCustomerInquiries_Insert.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MadgoodiesDB.publish.xml" />

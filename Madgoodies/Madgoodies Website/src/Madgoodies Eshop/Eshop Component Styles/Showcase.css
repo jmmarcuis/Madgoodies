@@ -4,7 +4,7 @@
   align-items: center;
   position: relative;
   width: 100%;
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -32,112 +32,113 @@
   transform: translateY(-50%);
   z-index: 10;
 }
-  
-  .carousel-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  .carousel-button:first-of-type {
-    left: 0;
-  }
-  
-  .carousel-button:last-of-type {
-    right: 0;
-  }
-  
-  .carousel-indicators {
-    display: flex;
-    gap: 5px;
-    margin-top: 10px;
-  }
-  
-  .indicator {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #ddd;
-  }
-  
-  .indicator.active {
-    background-color: #000;
-  }
-  
-  
-  .showcase-carousel-item {
-    flex: 0 0 calc(33.333% - 20px);
-    max-width: calc(33.333% - 20px);
-    width: 100%;
-  }
-  
-  .showcase-card {
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-    border: 2px solid #000000;
-    box-shadow: 6px 6px 0px #000;
-    border-radius: 5px;
-    overflow: hidden;
-    transition: box-shadow 0.3s ease;
-    margin-bottom: 20px;
-    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
-    will-change: transform;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    width: 100%;
-    max-width: 420px;
-    height: 540px;
-    position: relative;
-  }
-  
-  .showcase-card-img-container {
-    height: 420px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    position: relative;
-  }
-  
-  .showcase-card-img-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .showcase-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .shop-button {
-    padding: 10px 20px;
-    background-color: #fff;
-    color: #000;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  
-  .showcase-title {
-    font-size: 1.5rem;
-    text-align: center;
-    margin: 10px 0;
-  }
-  
-  .showcase-description {
-    font-size: 1rem;
-    text-align: center;
-    margin: 10px 20px;
-  }
-  
+
+.carousel-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.carousel-button:first-of-type {
+  left: -90px; /* Move the left button further away */
+}
+
+.carousel-button:last-of-type {
+  right: -100px; /* Move the right button further away */
+}
+.carousel-indicators {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ddd;
+}
+
+.indicator.active {
+  background-color: #000;
+}
+
+
+.showcase-carousel-item {
+  flex: 0 0 calc(33.333% - 20px);
+  max-width: calc(33.333% - 20px);
+  width: 100%;
+}
+
+.showcase-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border: 2px solid #000000;
+  box-shadow: 6px 6px 0px #000;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+  margin-bottom: 20px;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  will-change: transform;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 100%;
+  max-width: 320px;
+  height: 440px;
+  position: relative;
+}
+
+.showcase-card-img-container {
+  height:470px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.showcase-card-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.showcase-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shop-button {
+  padding: 10px 20px;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.showcase-title {
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 10px 0;
+  text-transform: uppercase;
+}
+
+.showcase-price {
+  font-size: 1rem;
+  text-align: center;
+ 
+}
+
 
 @media (max-width: 768px) {
   .showcase-carousel-item {

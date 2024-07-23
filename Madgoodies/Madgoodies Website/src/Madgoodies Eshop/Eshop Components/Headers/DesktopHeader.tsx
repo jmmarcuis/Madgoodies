@@ -6,6 +6,7 @@ import FacebookIcon from "../Icons/FacebookIcon";
 import MailIcon from "../Icons/MailIcon";
 import gatogif from "../../../assets/jumping-gatito.gif";
 import { NavLink, Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const socialMediaLinks = {
   instagram: "https://www.instagram.com/your_instagram_handle",
@@ -14,9 +15,12 @@ const socialMediaLinks = {
   github: "https://github.com/jmmarcuis",
 };
 
-const DesktopHeader: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+interface DesktopHeaderProps {
+  toggleCart: () => void;
+}
 
+const DesktopHeader: React.FC<DesktopHeaderProps> = ({ toggleCart }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
@@ -25,12 +29,17 @@ const DesktopHeader: React.FC = () => {
         <Link to="/" className="logo-link">
           <img className="desktop-header-img" src={logo} alt="logo" />{" "}
         </Link>
-          <button className="desktop-button">ORDER ONLINE</button>
+        <Link to="/product">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="desktop-button"
+          >
+            ORDER ONLINE
+          </motion.button>
+        </Link>
         <nav className={`desktop-nav ${isMenuOpen ? "open" : ""}`}>
-          <NavLink to="/location" onClick={toggleMenu}>
-            HOURS AND LOCATION{" "}
-          </NavLink>
-          <NavLink to="/about" onClick={toggleMenu}>
+          <NavLink to="/" onClick={toggleMenu}>
             ABOUT
           </NavLink>
           <NavLink to="/contact" onClick={toggleMenu}>
@@ -39,6 +48,14 @@ const DesktopHeader: React.FC = () => {
           <NavLink to="/contact" onClick={toggleMenu}>
             CONTACT
           </NavLink>
+          <NavLink to="/login" onClick={toggleMenu}>
+            LOGIN
+          </NavLink>
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }} className="desktop-button" onClick={toggleCart}>
+            Cart
+          </motion.button>
         </nav>
         <div className="desktop-header-socials">
           <InstagramIcon
@@ -55,7 +72,11 @@ const DesktopHeader: React.FC = () => {
           <img src={gatogif} alt="" />
         </div>
         <div className="desktop-header-powered-by">
-          <span onClick={() => (window.location.href = socialMediaLinks.github)}>made with 1200mg of caffeine by me</span>
+          <span
+            onClick={() => (window.location.href = socialMediaLinks.github)}
+          >
+            made with 1200mg of caffeine by me
+          </span>
         </div>
       </header>
     </>

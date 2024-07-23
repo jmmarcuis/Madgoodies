@@ -2,15 +2,19 @@ using GoodsHub.Hubs;
 using CloudinaryDotNet;
 using DataLibrary.Data;
 using DataLibrary.Database;
+using DataLibrary.Helper;
 using dotenv.net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using DataLibrary.CustomerData;
+using DataLibrary.OnlineOrderData;
+using DataLibrary.CustomerModel;
+using DataLibrary.CustomerServiceData;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Cloudinary credentials
@@ -25,10 +29,16 @@ builder.Services.AddControllers();
 builder.Services.AddTransient<IOrderData, OrderData>();
 builder.Services.AddTransient<IUserData, UserData>();
 builder.Services.AddTransient<IProductData, ProductData>();
- builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
-builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
-builder.Services.AddSignalR();
+builder.Services.AddTransient<ICustomerData, CustomerData>();
+builder.Services.AddTransient<ICustomerInquiryService, CustomerInquiryService>();
 
+builder.Services.AddTransient<IOnlineOrderService, OnlineOrderService>();
+builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
+builder.Services.AddScoped<TokenService>();
+
+builder.Services.AddSignalR();
 
 builder.Services.AddCors(options =>
 {
@@ -65,28 +75,28 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowAllOrigins");
-app.UseCors("AllowSpecificOrigins");
+app.UseStaticFiles();
+app.UseRouting();
+
+app.UseCors("AllowReactApp");
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
-app.UseStaticFiles();
-app.UseRouting(); app.UseCors("AllowReactApp");
 app.MapHub<FetchGoodHub>("/FetchHub");
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
-app.MapFallbackToFile("index.html"); ;
+app.MapFallbackToFile("index.html");
 
 app.Run();

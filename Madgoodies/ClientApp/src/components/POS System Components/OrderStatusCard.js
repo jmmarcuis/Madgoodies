@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../Component Styles/OrderStatusCard.css';
 
-const OrderStatusCard = ({ order, onSelect, isSelected }) => {
+const OrderStatusCard = ({ order, onSelect, isSelected, isOnlineOrder }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'Pending':
@@ -22,7 +22,15 @@ const OrderStatusCard = ({ order, onSelect, isSelected }) => {
     <div className={`order-status-card ${isSelected ? 'selected' : ''}`} onClick={onSelect}>
       <div className="order-status-card-left">
         <h4>Order No. {order.orderID}</h4>
-        <p>Number of items: {order.orderDetails.length}</p>
+        {isOnlineOrder ? (
+          <>
+             <span className="card-span">Online Order</span>
+          </>
+        ) : (
+          <>
+             <span className="card-span">Physical Order</span>
+          </>
+        )}
       </div>
       <div className="order-status-card-right">
         <p className="price">PHP {order.totalAmount.toFixed(2)}</p>
@@ -37,20 +45,22 @@ const OrderStatusCard = ({ order, onSelect, isSelected }) => {
 OrderStatusCard.propTypes = {
   order: PropTypes.shape({
     orderID: PropTypes.number.isRequired,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    totalAmount: PropTypes.number.isRequired,
+    orderStatus: PropTypes.string.isRequired,
     orderDetails: PropTypes.arrayOf(
       PropTypes.shape({
-        productID: PropTypes.number.isRequired,
-        productName: PropTypes.string.isRequired,
-        quantity: PropTypes.number.isRequired,
-        price: PropTypes.number.isRequired,
+        productID: PropTypes.number,
+        productName: PropTypes.string,
+        quantity: PropTypes.number,
+        price: PropTypes.number,
       })
-    ).isRequired,
-    totalAmount: PropTypes.number.isRequired,
-    orderDate: PropTypes.string.isRequired,
-    orderStatus: PropTypes.string.isRequired,
+    ),
   }).isRequired,
   onSelect: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
+  isOnlineOrder: PropTypes.bool.isRequired,
 };
 
 export default OrderStatusCard;

@@ -1,0 +1,167 @@
+.checkout-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.order-summary h2{
+margin-bottom: 15px;
+}
+
+.personal-info-form h2{
+
+  margin-bottom: 10px;
+}
+.checkout-content {
+  display: flex;
+  gap: 2rem;
+  border: 2px solid #000000;
+  padding: 40px;
+}
+
+.order-summary,
+.personal-info-section {
+  flex: 1;
+  min-width: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+.order-summary {
+  padding: 1.5rem;
+  border-radius: 8px;
+  overflow-y: auto;
+}
+
+.order-summary-content {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.checkout-item {
+  display: flex;
+  margin-bottom: 1.1rem;
+  padding: 1.5rem;
+  border: 1.3px solid #000000;
+  border-radius: 4px;
+}
+
+.checkout-item-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 1.5rem;
+}
+
+.checkout-item-details {
+  flex-grow: 1;
+}
+
+.checkout-item-details h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.checkout-item-price-remove {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkout-item-price-remove p {
+  margin: 0;
+  font-weight: bold;
+}
+
+.checkout-item-price-remove button {
+  background-color: #ffffff;
+  border: 2px solid #000;
+  border-radius: 4px;
+  box-shadow: #000 4px 4px 0 0;
+  color: #000;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 20px;
+  line-height: 22px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-top: 15px;
+}
+
+.checkout-item-price-remove button:hover {
+  background-color: #fff;
+}
+
+.place-order-button{
+  background-color: #000000;
+  width: 100%;
+  border: 2px solid #000;
+  border-radius: 4px;
+  box-shadow: #000 4px 4px 0 0;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 20px;
+  line-height: 22px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+ 
+}
+
+.quantity-controls button {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.quantity-controls span {
+  margin: 0 10px;
+}
+
+.checkout-total {
+  margin-top: 1rem;
+  text-align: right;
+  font-size: 1.4rem;
+}
+
+.personal-info-form {
+  padding: 1.5rem;
+}
+ 
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: -10px;
+}
+
+.personal-info-form input,
+.personal-info-form select {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 2px solid #000000;
+}
+
+ 
+@media (max-width: 768px) {
+  .checkout-content {
+    flex-direction: column;
+  }
+}

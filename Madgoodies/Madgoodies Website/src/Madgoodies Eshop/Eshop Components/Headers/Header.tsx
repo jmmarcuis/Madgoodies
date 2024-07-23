@@ -9,9 +9,10 @@ interface NavItem {
 
 interface HeaderProps {
   isMobile: boolean;
+  toggleCart: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ isMobile }) => {
+const Header: React.FC<HeaderProps> = ({ isMobile, toggleCart }) => {
   const navItems: NavItem[] = [
     { to: '/', label: 'Home' },
     { to: '/order', label: 'Order Online' },
@@ -22,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ isMobile }) => {
   return isMobile ? (
     <MobileHeader navItems={navItems} />
   ) : (
-    <DesktopHeader  />
+    <DesktopHeader toggleCart={toggleCart} />
   );
 };
 

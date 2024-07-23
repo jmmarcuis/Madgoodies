@@ -8,8 +8,9 @@ import Cart from "./Pages/Cart";
 import OrderStatus from "./Pages/OrderStatus";
 import Inventory from "./Pages/Inventory";
 import SalesRecord from "./Pages/SalesRecord";
-import Admin from "./Pages/Admin"
-
+import OnlineOrderStatus from "./Pages/OnlineOrderStatus";
+import Admin from "./Pages/Admin";
+import OnlineSalesRecord from "./Pages/OnlineSalesRecord"
 const PosSystem = () => {
   const navigate = useNavigate();
   const [activeComponent, setActiveComponent] = useState("inventory");
@@ -49,9 +50,14 @@ const PosSystem = () => {
       case "inventory":
         return <Inventory />;
       case "salesrecord":
-        return <SalesRecord/>;
+        return <SalesRecord />;
       case "admin":
-        return <Admin/>;
+        return <Admin />;
+      case "onlineorder":
+        return <OnlineOrderStatus />;
+        case "onlinesales":
+          return <OnlineSalesRecord />;
+          
       default:
         return null;
     }
@@ -71,48 +77,91 @@ const PosSystem = () => {
   };
 
   return (
-    <div className={`PosDashboard ${isSidebarVisible ? "sidebar-visible" : "sidebar-hidden"}`}>
-      <div className={`PosSidePanel ${isSidebarVisible ? "visible" : "hidden"}`}>
+    <div
+      className={`PosDashboard ${
+        isSidebarVisible ? "sidebar-visible" : "sidebar-hidden"
+      }`}
+    >
+      <div
+        className={`PosSidePanel ${isSidebarVisible ? "visible" : "hidden"}`}
+      >
         <button className="toggle-sidebar-button" onClick={toggleSidebar}>
           {isSidebarVisible ? "◀" : "☰"}
         </button>
         {isSidebarVisible && (
           <>
             <div className="logo-container">
-              <img src={Madgoodieslogo} alt="Logo" className="possystem-login-logo" />
+              <img
+                src={Madgoodieslogo}
+                alt="Logo"
+                className="possystem-login-logo"
+              />
             </div>
             <ul className="menu">
               <li
-                className={`menu-item ${activeComponent === "cart" ? "active" : ""}`}
+                className={`menu-item ${
+                  activeComponent === "cart" ? "active" : ""
+                }`}
                 onClick={() => switchComponent("cart")}
               >
                 <i className="fas fa-book"></i> <span>Catalogue</span>
               </li>
               <li
-                className={`menu-item ${activeComponent === "sales" ? "active" : ""}`}
+                className={`menu-item ${
+                  activeComponent === "sales" ? "active" : ""
+                }`}
                 onClick={() => switchComponent("sales")}
               >
                 <i className="fas fa-shopping-cart"></i> <span>Orders</span>
               </li>
               <li
-                className={`menu-item ${activeComponent === "inventory" ? "active" : ""}`}
+                className={`menu-item ${
+                  activeComponent === "onlineorder" ? "active" : ""
+                }`}
+                onClick={() => switchComponent("onlineorder")}
+              >
+                <i className="fas fa-shopping-cart"></i> <span>Online Orders</span>
+              </li>
+              <li
+                className={`menu-item ${
+                  activeComponent === "inventory" ? "active" : ""
+                }`}
                 onClick={() => switchComponent("inventory")}
               >
                 <i className="fas fa-box"></i> <span>Inventory</span>
               </li>
               <li
-                className={`menu-item ${activeComponent === "salesrecord" ? "active" : ""}`}
+                className={`menu-item ${
+                  activeComponent === "salesrecord" ? "active" : ""
+                }`}
                 onClick={() => switchComponent("salesrecord")}
               >
                 <i className="fas fa-chart-line"></i> <span>Sales Record</span>
               </li>
               <li
-                className={`menu-item ${activeComponent === "admin" ? "active" : ""}`}
+                className={`menu-item ${
+                  activeComponent === "onlinesales" ? "active" : ""
+                }`}
+                onClick={() => switchComponent("onlinesales")}
+              >
+                <i className="fas fa-chart-line"></i> <span>Online Sales</span>
+              </li>
+              <li
+                className={`menu-item ${
+                  activeComponent === "admin" ? "active" : ""
+                }`}
                 onClick={() => switchComponent("admin")}
               >
                 <i className="fas fa-user"></i> <span>Users</span>
               </li>
-           
+              <li
+                className={`menu-item ${
+                  activeComponent === "customer" ? "active" : ""
+                }`}
+                onClick={() => switchComponent("customer")}
+              >
+                <i className="fas fa-bell-concierge"></i> <span>Customer</span>
+              </li>
             </ul>
             <div className="logout">
               <ul className="menu">
@@ -125,9 +174,7 @@ const PosSystem = () => {
         )}
       </div>
 
-      <div className="PosContent">
-        {renderActiveComponent()}
-      </div>
+      <div className="PosContent">{renderActiveComponent()}</div>
     </div>
   );
 };

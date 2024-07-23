@@ -11,15 +11,16 @@
   display: flex;
   flex-direction: column;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  align-items: center;
   justify-content: space-between;
+  
   z-index: 300;
-}
+ }
 
 .desktop-site-location {
   border-top: 3px solid #000;
   border-bottom: 3px solid #000;
-  padding-top: 0.9375rem;
-  padding-bottom: 0.9375rem;
+   padding-bottom: 0.9375rem;
   width: 100%;
   text-align: center;
   display: flex;
@@ -40,11 +41,11 @@
 }
 
 .desktop-button  {
-  background-color: #fbeee0;
-  border: 2px solid #422800;
-  border-radius: 30px;
-  box-shadow: #422800 4px 4px 0 0;
-  color: #422800;
+  background-color: #ffffff;
+  border: 2px solid #000;
+  border-radius: 4px;
+  box-shadow: #000 4px 4px 0 0;
+  color: #000;
   cursor: pointer;
   display: inline-block;
   font-weight: 600;
@@ -56,7 +57,8 @@
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-}
+  margin-top: 15px;
+ }
 
 .desktop-button:hover {
   background-color: #fff;
@@ -79,6 +81,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: -10px;
 }
 
 .desktop-nav a {
@@ -93,7 +96,7 @@
 }
 
 .desktop-nav a:hover {
-  color: #e91e63;
+  color: #383838;
 }
 
 .desktop-header-socials {
@@ -120,4 +123,8 @@
   color: #2a2a2a;
   text-align: center;
   margin-bottom: 20px;
+}
+
+.desktop-header-gif{
+margin-bottom: -50px;
 }

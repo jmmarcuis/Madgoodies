@@ -27,7 +27,6 @@ namespace BlogAPI.Controllers
             _hubContext = hubContext;
         }
 
-
         [HttpPost]
         [Route("add")]
         public async Task<IActionResult> AddGood([FromForm] CreateGood good, [FromForm] IFormFile? productImage)
@@ -61,8 +60,6 @@ namespace BlogAPI.Controllers
             }
         }
 
-
-
         [HttpGet]
         [Route("all")]
         public IActionResult GetAllGoods()
@@ -88,14 +85,12 @@ namespace BlogAPI.Controllers
         {
             try
             {
-                // Retrieve the good details
                 var good = _db.GetGoodById(id);
                 if (good == null)
                 {
                     return NotFound("Good not found");
                 }
 
-                // Delete the image from Cloudinary
                 var publicId = GetPublicIdFromUrl(good.ProductImageUrl);
                 if (!string.IsNullOrEmpty(publicId))
                 {
@@ -108,7 +103,6 @@ namespace BlogAPI.Controllers
                     }
                 }
 
-                // Perform the soft delete
                 _db.DeleteGood(id);
                 await _hubContext.Clients.All.SendAsync("ReceiveMessage", "Good Deleted");
 
@@ -158,7 +152,7 @@ namespace BlogAPI.Controllers
                 Console.WriteLine($"Updating Good: ID={id}, ProductName={good.ProductName}, Price={good.Price}, Stock={good.Stock}, Description={good.Description}");
 
                 _db.UpdateGoodDetails(id, good.ProductName, good.Price, good.Stock, good.Description);
-                await _hubContext.Clients.All.SendAsync("ReceiveMessage", "New good added");
+                await _hubContext.Clients.All.SendAsync("ReceiveMessage", "Good updated");
 
                 return Ok(new { message = "Good updated successfully", updatedGood = good });
             }
@@ -168,20 +162,17 @@ namespace BlogAPI.Controllers
             }
         }
 
-
         [HttpPut("{id}/image")]
         public async Task<IActionResult> UpdateGoodImage(int id, IFormFile productImage)
         {
             try
             {
-                // Get the existing good
                 var existingGood = _db.GetGoodById(id);
                 if (existingGood == null)
                 {
                     return NotFound("Good not found");
                 }
 
-                // Delete the old image from Cloudinary if it exists
                 if (!string.IsNullOrEmpty(existingGood.ProductImageUrl))
                 {
                     var publicId = GetPublicIdFromUrl(existingGood.ProductImageUrl);
@@ -197,7 +188,6 @@ namespace BlogAPI.Controllers
                     }
                 }
 
-                // Upload the new image
                 if (productImage != null)
                 {
                     var uploadParams = new ImageUploadParams()
@@ -209,7 +199,6 @@ namespace BlogAPI.Controllers
                     var uploadResult = await _cloudinary.UploadAsync(uploadParams);
                     string imageUrl = uploadResult.SecureUrl.ToString();
 
-                    // Update the good with the new image URL
                     _db.UpdateGoodImage(id, imageUrl);
 
                     return Ok(new { message = "Good image updated successfully", imageUrl = imageUrl });
@@ -271,14 +260,29 @@ namespace BlogAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+        [HttpGet("{id}")]
+        public IActionResult GetGoodById(int id)
+        {
+            try
+            {
+                var good = _db.GetGoodById(id);
+                if (good == null)
+                {
+                    return NotFound("Good not found");
+                }
+
+                return Ok(good);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
 
 
         public class PackagingRequest
         {
             public int PackageQuantity { get; set; }
         }
-
-
     }
 }
-

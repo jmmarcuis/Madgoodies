@@ -1,7 +1,8 @@
-﻿CREATE PROCEDURE [dbo].[spGetGoodById]
+﻿CREATE PROCEDURE dbo.spGetGoodById
     @ProductID INT
 AS
 BEGIN
+    SET NOCOUNT ON;
     SELECT 
         ProductID,
         ProductImageUrl,
@@ -9,8 +10,6 @@ BEGIN
         Price,
         Stock,
         Description
-    FROM 
-        Goods 
-    WHERE 
-        ProductID = @ProductID AND IsDeleted = 0;
+    FROM dbo.Goods
+    WHERE ProductID = @ProductID AND IsDeleted = 0;
 END

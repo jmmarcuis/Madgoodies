@@ -1,0 +1,26 @@
+.receipt-print {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+  }
+  
+  .receipt-print h3 {
+    border-bottom: 1px solid #000;
+    padding-bottom: 10px;
+  }
+  
+  .receipt-print p {
+    margin: 5px 0;
+  }
+  
+  .receipt-print ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .receipt-print li {
+    border-bottom: 1px solid #ddd;
+    padding: 5px 0;
+  }
+  
